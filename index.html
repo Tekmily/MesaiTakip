@@ -3,144 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesai Takip Pro</title>
+    <title>Mesai Takip Pro | Gruplu Sistem</title>
     
-    <!-- Tailwind CSS (Tasarım için) -->
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669' } } } }
+            theme: {
+                fontFamily: { sans: ['Inter', 'sans-serif'] },
+                extend: {
+                    colors: {
+                        orange: { 50: '#fff7ed', 100: '#ffedd5', 400: '#fb923c', 500: '#f97316', 600: '#ea580c' },
+                        navy: { 50: '#f0f4f8', 100: '#d9e2ec', 800: '#1e293b', 900: '#0f172a', 950: '#0a192f' },
+                        sunlight: { 50: '#fdfbf7', 100: '#fcf8ee', 200: '#f8f0d8' }
+                    }
+                }
+            }
         }
     </script>
     
-    <!-- İkonlar (Phosphor Icons) -->
+    <!-- İkonlar -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- Bildirimler (Toastify) -->
+    <!-- Bildirimler -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     
     <style>
-        body { transition: background-color 0.3s, color 0.3s; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            transition: background-color 0.4s ease, color 0.4s ease; 
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        
+        .dark input[type="date"]::-webkit-calendar-picker-indicator,
+        .dark input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(1); }
+
+        .bg-slider { transition: background-image 1.5s ease-in-out; }
     </style>
 </head>
-<body class="bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
+<body class="bg-sunlight-50 dark:bg-navy-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
 
     <!-- GİRİŞ EKRANI -->
-    <div id="loginScreen" class="flex min-h-screen items-center justify-center p-4">
-        <div class="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-lg w-full max-w-md border border-zinc-200 dark:border-zinc-800">
-            <div class="text-center mb-8">
-                <i class="ph-fill ph-clock text-5xl text-emerald-500 mb-4 inline-block"></i>
-                <h1 class="text-2xl font-bold">Mesai Takip Pro</h1>
-                <p class="text-zinc-500 dark:text-zinc-400 mt-2">Devam etmek için giriş yapın</p>
-            </div>
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="mb-6">
-                    <label class="block text-sm font-medium mb-2">Adınız Soyadınız</label>
-                    <input type="text" id="usernameInput" required class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Örn: Ahmet Yılmaz">
+    <div id="loginScreen" class="flex flex-1 items-center justify-center p-4 transition-opacity duration-500">
+        <div class="bg-white dark:bg-navy-900 p-8 sm:p-10 rounded-[2rem] shadow-xl shadow-orange-500/10 dark:shadow-none w-full max-w-md border border-sunlight-200 dark:border-navy-800 relative overflow-hidden">
+            <div class="relative z-10 text-center mb-8">
+                <div class="w-20 h-20 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="ph-fill ph-users-three text-4xl text-orange-500"></i>
                 </div>
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl transition-colors">Giriş Yap</button>
+                <h1 class="text-2xl font-bold tracking-tight">Mesai Takip Pro</h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">Yönetici girişi yapın</p>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)" class="relative z-10">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">Adınız Soyadınız</label>
+                    <input type="text" id="usernameInput" required 
+                        class="w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-5 py-3.5 focus:ring-2 focus:ring-orange-500 outline-none transition-all" 
+                        placeholder="Örn: Ahmet Yılmaz">
+                </div>
+                <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3.5 rounded-2xl transition-all shadow-lg shadow-orange-500/30 active:scale-[0.98]">
+                    Sisteme Gir
+                </button>
             </form>
         </div>
     </div>
 
     <!-- ANA EKRAN (DASHBOARD) -->
-    <div id="dashboardScreen" class="hidden pb-20">
+    <div id="dashboardScreen" class="hidden flex-1 pb-20 fade-in">
         <!-- Üst Menü -->
-        <header class="sticky top-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800">
-            <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-lg">
+        <header class="sticky top-0 z-50 bg-white/80 dark:bg-navy-950/80 backdrop-blur-xl border-b border-sunlight-200 dark:border-navy-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-2.5 text-orange-600 dark:text-orange-500 font-bold text-lg tracking-tight">
                     <i class="ph-fill ph-clock text-2xl"></i> Mesai Pro
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="hidden sm:flex items-center gap-2 text-sm bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-full">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span id="displayUsername">Kullanıcı</span>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="hidden sm:flex items-center gap-2 text-sm bg-sunlight-100 dark:bg-navy-900 px-4 py-2 rounded-full border border-sunlight-200 dark:border-navy-800">
+                        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                        <span id="displayUsername" class="font-medium">Kullanıcı</span>
                     </div>
-                    <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xl"><i class="ph ph-moon" id="themeIcon"></i></button>
-                    <button onclick="handleLogout()" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xl text-red-500"><i class="ph ph-sign-out"></i></button>
+                    <div class="h-6 w-px bg-slate-200 dark:bg-navy-800 hidden sm:block"></div>
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-full hover:bg-sunlight-100 dark:hover:bg-navy-800 text-xl transition-colors">
+                        <i class="ph-fill ph-moon" id="themeIcon"></i>
+                    </button>
+                    <button onclick="handleLogout()" class="p-2.5 rounded-full hover:bg-red-50 dark:hover:bg-red-500/10 text-xl text-red-500 transition-colors">
+                        <i class="ph ph-sign-out"></i>
+                    </button>
                 </div>
             </div>
         </header>
 
-        <main class="max-w-6xl mx-auto px-4 mt-8 space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Yeni Kayıt Ekleme -->
-                <div class="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
-                    <h2 class="text-xl font-semibold mb-6 flex items-center gap-2"><i class="ph ph-plus-circle text-emerald-500"></i> Yeni Mesai Girişi</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                        <div>
-                            <label class="block text-sm font-medium mb-2 text-zinc-500">Tarih</label>
-                            <input type="date" id="dateInput" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 dark:[color-scheme:dark]">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                
+                <!-- Yeni Kayıt Ekleme Kartı -->
+                <div class="lg:col-span-2 relative overflow-hidden bg-white/90 dark:bg-navy-900/90 backdrop-blur-md border border-sunlight-200 dark:border-navy-800 rounded-[2rem] p-6 sm:p-8 shadow-sm">
+                    <div id="bg-card-1" class="absolute inset-0 z-0 opacity-10 dark:opacity-20 bg-slider bg-cover bg-center"></div>
+                    
+                    <div class="relative z-10">
+                        <h2 class="text-xl font-semibold mb-6 flex items-center gap-3">
+                            <div class="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-xl text-orange-600 dark:text-orange-400"><i class="ph ph-plus text-lg"></i></div>
+                            Yeni Mesai Girişi
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                            <!-- Kişi / Grup Seçimi -->
+                            <div class="sm:col-span-2 lg:col-span-1 flex flex-col gap-2">
+                                <label class="block text-sm font-medium text-slate-600 dark:text-slate-400">Kişi / Grup</label>
+                                <select id="personSelect" onchange="handlePersonSelect()" class="w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all font-medium">
+                                    <!-- JS ile doldurulacak -->
+                                </select>
+                                <input type="text" id="newPersonInput" class="hidden w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all mt-2" placeholder="Yeni kişi/grup adı...">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">Tarih</label>
+                                <input type="date" id="dateInput" class="w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">Başlangıç</label>
+                                <input type="time" id="startInput" value="09:00" class="w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-slate-600 dark:text-slate-400">Bitiş</label>
+                                <input type="time" id="endInput" value="17:00" class="w-full bg-sunlight-50 dark:bg-navy-950 border border-sunlight-200 dark:border-navy-800 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-orange-500 transition-all">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2 text-zinc-500">Başlangıç</label>
-                            <input type="time" id="startInput" value="09:00" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 dark:[color-scheme:dark]">
+                        
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-sunlight-50/80 dark:bg-navy-950/80 backdrop-blur-sm rounded-2xl border border-sunlight-200 dark:border-navy-800">
+                            <div class="text-center sm:text-left">
+                                <div class="text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">Hesaplanan Süre</div>
+                                <div id="durationDisplay" class="text-xl font-bold text-orange-600 dark:text-orange-400">8 saat 0 dakika</div>
+                            </div>
+                            <button onclick="saveRecord()" id="saveBtn" class="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-orange-500/20 active:scale-[0.98]">
+                                <i class="ph ph-floppy-disk text-xl"></i> Kaydet
+                            </button>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2 text-zinc-500">Bitiş</label>
-                            <input type="time" id="endInput" value="17:00" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500 dark:[color-scheme:dark]">
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-zinc-50 dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                        <div>
-                            <div class="text-sm text-zinc-500 mb-1">Hesaplanan Süre</div>
-                            <div id="durationDisplay" class="text-lg font-semibold text-emerald-600 dark:text-emerald-400">8 saat 0 dakika</div>
-                        </div>
-                        <button onclick="saveRecord()" id="saveBtn" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors">
-                            <i class="ph ph-floppy-disk text-lg"></i> Kaydet
-                        </button>
                     </div>
                 </div>
 
-                <!-- Özet -->
-                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm">
-                    <h2 class="text-xl font-semibold mb-6 flex items-center gap-2"><i class="ph ph-chart-bar text-emerald-500"></i> Özet</h2>
-                    <div class="space-y-4">
-                        <div class="bg-zinc-50 dark:bg-zinc-950 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                            <div class="text-sm text-zinc-500 mb-1">Toplam Mesai</div>
-                            <div class="text-3xl font-light"><span id="totalH">0</span><span class="text-lg text-zinc-500 ml-1">sa</span> <span id="totalM">0</span><span class="text-lg text-zinc-500 ml-1">dk</span></div>
-                        </div>
-                        <div class="bg-zinc-50 dark:bg-zinc-950 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-                            <div class="text-sm text-zinc-500 mb-1">Kayıt Sayısı</div>
-                            <div id="totalCount" class="text-2xl font-light">0</div>
+                <!-- Genel Özet Kartı -->
+                <div class="relative overflow-hidden bg-white/90 dark:bg-navy-900/90 backdrop-blur-md border border-sunlight-200 dark:border-navy-800 rounded-[2rem] p-6 sm:p-8 shadow-sm flex flex-col">
+                    <div id="bg-card-2" class="absolute inset-0 z-0 opacity-10 dark:opacity-20 bg-slider bg-cover bg-center"></div>
+                    
+                    <div class="relative z-10 flex-1 flex flex-col">
+                        <h2 class="text-xl font-semibold mb-6 flex items-center gap-3">
+                            <div class="p-2 bg-blue-100 dark:bg-blue-500/20 rounded-xl text-blue-600 dark:text-blue-400"><i class="ph ph-chart-pie-slice text-lg"></i></div>
+                            Genel Durum
+                        </h2>
+                        <div class="space-y-4 flex-1 flex flex-col justify-center">
+                            <div class="bg-sunlight-50/80 dark:bg-navy-950/80 backdrop-blur-sm p-5 rounded-2xl border border-sunlight-200 dark:border-navy-800">
+                                <div class="text-sm text-slate-500 dark:text-slate-400 mb-2 font-medium">Tüm Grupların Toplamı</div>
+                                <div class="text-4xl font-light tracking-tight text-slate-900 dark:text-white">
+                                    <span id="totalH" class="font-semibold">0</span><span class="text-xl text-slate-400 ml-1 mr-2 font-normal">sa</span> 
+                                    <span id="totalM" class="font-semibold">0</span><span class="text-xl text-slate-400 ml-1 font-normal">dk</span>
+                                </div>
+                            </div>
+                            <div class="bg-sunlight-50/80 dark:bg-navy-950/80 backdrop-blur-sm p-5 rounded-2xl border border-sunlight-200 dark:border-navy-800 flex items-center justify-between">
+                                <div class="text-sm text-slate-500 dark:text-slate-400 font-medium">Toplam Kayıt / Grup</div>
+                                <div class="text-xl font-semibold text-slate-900 dark:text-white"><span id="totalCount">0</span> <span class="text-slate-400 text-sm font-normal mx-1">/</span> <span id="groupCount" class="text-orange-500">0</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Kayıtlar Tablosu ve Butonlar -->
-            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl shadow-sm overflow-hidden">
-                <div class="p-6 border-b border-zinc-200 dark:border-zinc-800 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4">
-                    <h2 class="text-xl font-semibold flex items-center gap-2"><i class="ph ph-list-dashes text-emerald-500"></i> Geçmiş Kayıtlar</h2>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="importCSV(event)">
-                        <input type="file" id="txtInput" accept=".txt" class="hidden" onchange="importTXT(event)">
-                        
-                        <button onclick="document.getElementById('csvInput').click()" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-upload-simple"></i> CSV İçe</button>
-                        <button onclick="document.getElementById('txtInput').click()" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-upload-simple"></i> TXT İçe</button>
-                        <button onclick="exportNotes()" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-share-network"></i> Notlara</button>
-                        <button onclick="exportTXT()" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-download-simple"></i> TXT</button>
-                        <button onclick="exportCSV()" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-download-simple"></i> CSV</button>
-                        <button onclick="clearAll()" class="px-3 py-2 border border-red-500/20 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-medium rounded-xl flex items-center gap-2"><i class="ph ph-trash"></i> Temizle</button>
+            <!-- GRUPLANDIRILMIŞ KAYITLAR BÖLÜMÜ -->
+            <div class="space-y-6">
+                <!-- Ana İşlem Çubuğu -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/90 dark:bg-navy-900/90 backdrop-blur-md border border-sunlight-200 dark:border-navy-800 rounded-2xl p-4 shadow-sm">
+                    <h2 class="text-lg font-semibold flex items-center gap-2">
+                        <i class="ph-fill ph-folders text-orange-500 text-xl"></i> Kayıt Grupları
+                    </h2>
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <button onclick="exportNotes('ALL')" class="flex-1 sm:flex-none px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-orange-500/20">
+                            <i class="ph ph-share-network text-lg"></i> Tümünü Paylaş
+                        </button>
+                        <button onclick="exportTXT('ALL')" class="px-4 py-2.5 bg-sunlight-100 dark:bg-navy-950 hover:bg-sunlight-200 dark:hover:bg-navy-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all border border-sunlight-200 dark:border-navy-800">
+                            <i class="ph ph-download-simple text-lg"></i> TXT
+                        </button>
+                        <button id="clearAllBtn" onclick="handleSmartDelete(this, 'ALL')" data-confirm="false" class="px-4 py-2.5 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all border border-red-200 dark:border-red-500/20 w-36">
+                            <i class="ph ph-trash text-lg"></i> <span>Tümünü Sil</span>
+                        </button>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-zinc-50 dark:bg-zinc-950/50 text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-                            <tr>
-                                <th class="px-6 py-4 font-medium">Tarih</th>
-                                <th class="px-6 py-4 font-medium">Başlangıç</th>
-                                <th class="px-6 py-4 font-medium">Bitiş</th>
-                                <th class="px-6 py-4 font-medium">Süre</th>
-                                <th class="px-6 py-4 font-medium text-right">İşlem</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recordsTableBody" class="divide-y divide-zinc-200 dark:divide-zinc-800">
-                            <!-- Kayıtlar buraya JS ile eklenecek -->
-                        </tbody>
-                    </table>
+
+                <!-- Grupların Listeleneceği Konteyner -->
+                <div id="groupedRecordsContainer" class="space-y-6">
+                    <!-- JS ile doldurulacak -->
                 </div>
             </div>
         </main>
@@ -151,10 +210,24 @@
         let currentUser = null;
         let records = [];
         let theme = localStorage.getItem('theme') || 'light';
+        let deleteTimeouts = {}; // Akıllı butonlar için zamanlayıcılar
+
+        // Arka Plan Resimleri (Unsplash)
+        const images = {
+            card1: ['https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80', 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80'],
+            card2: ['https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80']
+        };
+        let imgIndex = 0;
+
+        function changeBackgrounds() {
+            document.getElementById('bg-card-1').style.backgroundImage = `url('${images.card1[imgIndex]}')`;
+            document.getElementById('bg-card-2').style.backgroundImage = `url('${images.card2[imgIndex]}')`;
+            imgIndex = (imgIndex + 1) % 2;
+        }
 
         // Başlangıç Ayarları
         document.documentElement.className = theme;
-        document.getElementById('themeIcon').className = theme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
+        document.getElementById('themeIcon').className = theme === 'dark' ? 'ph-fill ph-sun' : 'ph-fill ph-moon';
         
         const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
         document.getElementById('dateInput').value = today;
@@ -172,14 +245,11 @@
         // Bildirim Fonksiyonu
         function showToast(text, isError = false) {
             Toastify({
-                text: text,
-                duration: 3000,
-                gravity: "bottom",
-                position: "right",
+                text: text, duration: 3000, gravity: "bottom", position: "right",
                 style: {
-                    background: isError ? "#ef4444" : "#10b981",
-                    borderRadius: "0.75rem",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                    background: isError ? "#ef4444" : "#f97316", color: "#fff",
+                    borderRadius: "1rem", padding: "12px 24px", fontWeight: "500",
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
                 }
             }).showToast();
         }
@@ -189,10 +259,10 @@
             theme = theme === 'light' ? 'dark' : 'light';
             document.documentElement.className = theme;
             localStorage.setItem('theme', theme);
-            document.getElementById('themeIcon').className = theme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
+            document.getElementById('themeIcon').className = theme === 'dark' ? 'ph-fill ph-sun' : 'ph-fill ph-moon';
         }
 
-        // Giriş ve Çıkış
+        // Giriş
         function handleLogin(e) {
             e.preventDefault();
             const name = document.getElementById('usernameInput').value.trim();
@@ -213,20 +283,59 @@
         function showDashboard() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboardScreen').classList.remove('hidden');
+            document.getElementById('dashboardScreen').classList.add('flex');
             document.getElementById('displayUsername').innerText = currentUser.name;
+            
+            changeBackgrounds();
+            setInterval(changeBackgrounds, 5000);
+            
             loadRecords();
         }
 
-        // Veri Yükleme ve Kaydetme
+        // Kişi/Grup Seçimi Yönetimi
+        function updatePersonSelect() {
+            const select = document.getElementById('personSelect');
+            const people = [...new Set(records.map(r => r.person))];
+            if(!people.includes(currentUser.name)) people.unshift(currentUser.name);
+            
+            let optionsHtml = people.map(p => `<option value="${p}">${p}</option>`).join('');
+            optionsHtml += `<option value="NEW" class="font-bold text-orange-500">+ Yeni Kişi/Grup Ekle...</option>`;
+            
+            const currentVal = select.value;
+            select.innerHTML = optionsHtml;
+            
+            if(people.includes(currentVal)) {
+                select.value = currentVal;
+            } else {
+                select.value = currentUser.name;
+            }
+            handlePersonSelect();
+        }
+
+        function handlePersonSelect() {
+            const select = document.getElementById('personSelect');
+            const input = document.getElementById('newPersonInput');
+            if(select.value === 'NEW') {
+                input.classList.remove('hidden');
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+            }
+        }
+
+        // Veri Yükleme
         function loadRecords() {
-            const saved = localStorage.getItem(`mesai_records_${currentUser.id}`);
+            const saved = localStorage.getItem(`mesai_records_v3_${currentUser.id}`);
             records = saved ? JSON.parse(saved) : [];
-            renderRecords();
+            updatePersonSelect();
+            renderGroupedRecords();
         }
 
         function saveToStorage() {
-            localStorage.setItem(`mesai_records_${currentUser.id}`, JSON.stringify(records));
-            renderRecords();
+            localStorage.setItem(`mesai_records_v3_${currentUser.id}`, JSON.stringify(records));
+            updatePersonSelect();
+            renderGroupedRecords();
         }
 
         // Süre Hesaplama
@@ -234,45 +343,36 @@
             if (!start || !end) return { valid: false, message: 'Saatleri girin' };
             let [sH, sM] = start.split(':').map(Number);
             let [eH, eM] = end.split(':').map(Number);
-            
             let startMins = sH * 60 + sM;
             let endMins = eH * 60 + eM;
-            
-            if (endMins < startMins) endMins += 24 * 60; // Ertesi güne sarkma
-            
+            if (endMins < startMins) endMins += 24 * 60; 
             let diff = endMins - startMins;
             let h = Math.floor(diff / 60);
             let m = diff % 60;
-            
             return { valid: true, hours: h, minutes: m, text: `${h} saat ${m} dakika` };
         }
 
         function updateDurationDisplay() {
-            const start = document.getElementById('startInput').value;
-            const end = document.getElementById('endInput').value;
-            const res = calculateDuration(start, end);
+            const res = calculateDuration(document.getElementById('startInput').value, document.getElementById('endInput').value);
             const display = document.getElementById('durationDisplay');
             const btn = document.getElementById('saveBtn');
-            
             if (res.valid) {
                 if (res.hours > 18 || (res.hours === 18 && res.minutes > 0)) {
-                    display.innerHTML = `<span class="text-red-500">Maksimum 18 saat girilebilir</span>`;
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    display.innerHTML = `<span class="text-red-500">Maks. 18 saat</span>`;
+                    btn.disabled = true; btn.classList.add('opacity-50');
                 } else {
                     display.innerHTML = res.text;
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.disabled = false; btn.classList.remove('opacity-50');
                 }
             } else {
                 display.innerHTML = `<span class="text-red-500">${res.message}</span>`;
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.disabled = true; btn.classList.add('opacity-50');
             }
         }
 
         // Çakışma Kontrolü
-        function checkOverlap(newDate, newStart, newEnd, listToCheck = records) {
+        function checkOverlap(person, newDate, newStart, newEnd) {
+            const personRecords = records.filter(r => r.person === person);
             const getTs = (d, s, e) => {
                 const st = new Date(`${d}T${s}`).getTime();
                 let et = new Date(`${d}T${e}`).getTime();
@@ -280,7 +380,7 @@
                 return { st, et };
             };
             const { st: nSt, et: nEt } = getTs(newDate, newStart, newEnd);
-            for (let r of listToCheck) {
+            for (let r of personRecords) {
                 const { st: rSt, et: rEt } = getTs(r.date, r.start, r.end);
                 if (nSt < rEt && nEt > rSt) return true;
             }
@@ -289,183 +389,280 @@
 
         // Kayıt Ekleme
         function saveRecord() {
+            const selectVal = document.getElementById('personSelect').value;
+            let person = selectVal === 'NEW' ? document.getElementById('newPersonInput').value.trim() : selectVal;
+            
+            if(!person) return showToast('Lütfen kişi veya grup adı girin', true);
+            
             const date = document.getElementById('dateInput').value;
             const start = document.getElementById('startInput').value;
             const end = document.getElementById('endInput').value;
             
-            const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
             if (date > today) return showToast('Gelecek tarihlere mesai ekleyemezsiniz.', true);
             
             const res = calculateDuration(start, end);
             if (!res.valid || res.hours > 18 || (res.hours === 18 && res.minutes > 0)) return;
             
-            if (checkOverlap(date, start, end)) return showToast('Bu saat aralığı mevcut bir kayıtla çakışıyor!', true);
+            if (checkOverlap(person, date, start, end)) return showToast(`${person} için bu saat aralığı çakışıyor!`, true);
             
-            records.push({ id: Date.now(), date, start, end, hours: res.hours, minutes: res.minutes });
+            records.push({ id: Date.now(), person, date, start, end, hours: res.hours, minutes: res.minutes });
             records.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
+            
+            // Eğer yeni eklendiyse select'i ona ayarla
+            if(selectVal === 'NEW') {
+                updatePersonSelect();
+                document.getElementById('personSelect').value = person;
+                handlePersonSelect();
+            }
+            
             saveToStorage();
-            showToast('Mesai kaydedildi');
+            showToast('Mesai başarıyla kaydedildi');
         }
 
-        function deleteRecord(id) {
+        function deleteSingleRecord(id) {
             records = records.filter(r => r.id !== id);
             saveToStorage();
             showToast('Kayıt silindi');
         }
 
-        function clearAll() {
-            if(confirm('Tüm kayıtları silmek istediğinize emin misiniz?')) {
-                records = [];
+        // Akıllı Silme Butonu Mantığı (Hem Tümü hem de Grup için)
+        function handleSmartDelete(btn, targetPerson) {
+            const isAll = targetPerson === 'ALL';
+            const targetRecords = isAll ? records : records.filter(r => r.person === targetPerson);
+            
+            if(targetRecords.length === 0) return showToast('Silinecek kayıt yok', true);
+
+            const btnId = isAll ? 'ALL' : targetPerson;
+
+            if (btn.dataset.confirm === "true") {
+                // Silme İşlemini Gerçekleştir
+                if(isAll) {
+                    records = [];
+                } else {
+                    records = records.filter(r => r.person !== targetPerson);
+                }
                 saveToStorage();
-                showToast('Tüm kayıtlar temizlendi');
+                
+                // Butonu Sıfırla (Eğer DOM'da hala varsa)
+                if(document.body.contains(btn)) {
+                    btn.dataset.confirm = "false";
+                    btn.innerHTML = isAll ? '<i class="ph ph-trash text-lg"></i> <span>Tümünü Sil</span>' : '<i class="ph ph-trash text-lg"></i>';
+                    btn.classList.remove('bg-red-500', 'text-white', 'hover:bg-red-600', 'shadow-md');
+                    btn.classList.add('bg-red-50', 'dark:bg-red-500/10', 'text-red-600', 'dark:text-red-400');
+                }
+                showToast(isAll ? 'Tüm kayıtlar temizlendi' : `${targetPerson} kayıtları silindi`);
+            } else {
+                // Emin misiniz durumuna geç
+                btn.dataset.confirm = "true";
+                const originalHtml = btn.innerHTML;
+                const originalClasses = btn.className;
+                
+                btn.innerHTML = isAll ? '<i class="ph-fill ph-warning text-lg"></i> <span>Emin misiniz?</span>' : '<i class="ph-fill ph-warning text-lg"></i>';
+                
+                // Kırmızı vurgu ekle
+                btn.classList.remove('bg-red-50', 'dark:bg-red-500/10', 'text-red-600', 'dark:text-red-400');
+                btn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600', 'shadow-md', 'shadow-red-500/30');
+                
+                clearTimeout(deleteTimeouts[btnId]);
+                deleteTimeouts[btnId] = setTimeout(() => {
+                    if(document.body.contains(btn)) {
+                        btn.dataset.confirm = "false";
+                        btn.innerHTML = originalHtml;
+                        btn.className = originalClasses;
+                    }
+                }, 3000);
             }
         }
 
-        // Tabloyu Çizme
-        function renderRecords() {
-            const tbody = document.getElementById('recordsTableBody');
-            tbody.innerHTML = '';
+        // Gruplandırılmış Tabloları Çizme
+        function renderGroupedRecords() {
+            const container = document.getElementById('groupedRecordsContainer');
+            container.innerHTML = '';
             
-            let totalMins = 0;
+            let globalMins = 0;
             
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-zinc-500">Henüz mesai kaydı bulunmuyor.</td></tr>`;
-            } else {
-                records.forEach(r => {
-                    totalMins += (r.hours * 60) + r.minutes;
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors';
-                    tr.innerHTML = `
-                        <td class="px-6 py-4">${r.date.split('-').reverse().join('.')}</td>
-                        <td class="px-6 py-4">${r.start}</td>
-                        <td class="px-6 py-4">${r.end}</td>
-                        <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">${r.hours}s ${r.minutes}dk</span></td>
-                        <td class="px-6 py-4 text-right">
-                            <button onclick="deleteRecord(${r.id})" class="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"><i class="ph ph-trash text-lg"></i></button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                container.innerHTML = `
+                <div class="bg-white/90 dark:bg-navy-900/90 border border-sunlight-200 dark:border-navy-800 rounded-2xl p-12 text-center shadow-sm">
+                    <i class="ph ph-folder-open text-5xl text-slate-300 dark:text-slate-700 mb-4 inline-block"></i>
+                    <h3 class="text-lg font-medium text-slate-600 dark:text-slate-400">Henüz hiçbir kayıt bulunmuyor.</h3>
+                </div>`;
+                document.getElementById('totalH').innerText = '0';
+                document.getElementById('totalM').innerText = '0';
+                document.getElementById('totalCount').innerText = '0';
+                document.getElementById('groupCount').innerText = '0';
+                return;
             }
-            
-            document.getElementById('totalH').innerText = Math.floor(totalMins / 60);
-            document.getElementById('totalM').innerText = totalMins % 60;
+
+            // Kişilere göre grupla
+            const grouped = records.reduce((acc, r) => {
+                if(!acc[r.person]) acc[r.person] = [];
+                acc[r.person].push(r);
+                return acc;
+            }, {});
+
+            const groupNames = Object.keys(grouped).sort();
+
+            groupNames.forEach(person => {
+                const personRecords = grouped[person];
+                let groupMins = 0;
+                
+                let tbodyHtml = '';
+                personRecords.forEach(r => {
+                    groupMins += (r.hours * 60) + r.minutes;
+                    globalMins += (r.hours * 60) + r.minutes;
+                    
+                    tbodyHtml += `
+                        <tr class="hover:bg-sunlight-50 dark:hover:bg-navy-800/50 transition-colors group/row">
+                            <td class="px-6 py-3 text-slate-700 dark:text-slate-300 font-medium">${r.date.split('-').reverse().join('.')}</td>
+                            <td class="px-6 py-3 text-slate-600 dark:text-slate-400">${r.start}</td>
+                            <td class="px-6 py-3 text-slate-600 dark:text-slate-400">${r.end}</td>
+                            <td class="px-6 py-3">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 font-semibold border border-orange-100 dark:border-orange-500/20 text-xs">
+                                    ${r.hours}s ${r.minutes}dk
+                                </span>
+                            </td>
+                            <td class="px-6 py-3 text-right">
+                                <button onclick="deleteSingleRecord(${r.id})" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover/row:opacity-100 focus:opacity-100">
+                                    <i class="ph-fill ph-trash text-base"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                const groupHours = Math.floor(groupMins / 60);
+                const groupRemMins = groupMins % 60;
+
+                const groupHtml = `
+                <div class="bg-white/90 dark:bg-navy-900/90 backdrop-blur-md border border-sunlight-200 dark:border-navy-800 rounded-[1.5rem] shadow-sm overflow-hidden">
+                    <!-- Grup Başlığı -->
+                    <div class="bg-sunlight-100/50 dark:bg-navy-950/50 p-4 sm:p-5 border-b border-sunlight-200 dark:border-navy-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold text-lg">
+                                ${person.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-900 dark:text-white">${person}</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Toplam: ${groupHours} saat ${groupRemMins} dakika <span class="mx-1">•</span> ${personRecords.length} kayıt</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Gruba Özel Butonlar -->
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <button onclick="exportNotes('${person}')" class="flex-1 sm:flex-none px-3 py-2 bg-white dark:bg-navy-800 hover:bg-sunlight-50 dark:hover:bg-navy-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all border border-sunlight-200 dark:border-navy-700 shadow-sm">
+                                <i class="ph ph-share-network text-lg"></i> <span class="hidden sm:inline">Paylaş</span>
+                            </button>
+                            <button onclick="exportTXT('${person}')" class="px-3 py-2 bg-white dark:bg-navy-800 hover:bg-sunlight-50 dark:hover:bg-navy-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-all border border-sunlight-200 dark:border-navy-700 shadow-sm" title="TXT İndir">
+                                <i class="ph ph-download-simple text-lg"></i>
+                            </button>
+                            <button onclick="handleSmartDelete(this, '${person}')" data-confirm="false" class="px-3 py-2 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 text-sm font-medium rounded-xl flex items-center justify-center transition-all border border-red-200 dark:border-red-500/20 w-12 sm:w-auto" title="Grubu Sil">
+                                <i class="ph ph-trash text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Grup Tablosu -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="text-slate-400 dark:text-slate-500 border-b border-sunlight-100 dark:border-navy-800/50 text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-3 font-semibold">Tarih</th>
+                                    <th class="px-6 py-3 font-semibold">Başlangıç</th>
+                                    <th class="px-6 py-3 font-semibold">Bitiş</th>
+                                    <th class="px-6 py-3 font-semibold">Süre</th>
+                                    <th class="px-6 py-3 font-semibold text-right">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-sunlight-100 dark:divide-navy-800/50">
+                                ${tbodyHtml}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `;
+                container.innerHTML += groupHtml;
+            });
+
+            // Genel Özet Güncelleme
+            document.getElementById('totalH').innerText = Math.floor(globalMins / 60);
+            document.getElementById('totalM').innerText = globalMins % 60;
             document.getElementById('totalCount').innerText = records.length;
+            document.getElementById('groupCount').innerText = groupNames.length;
         }
 
-        // İçe / Dışa Aktarma Fonksiyonları
+        // Paylaşım ve İndirme Fonksiyonları
         function downloadFile(content, filename, type) {
             const blob = new Blob([content], { type });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
+            a.href = url; a.download = filename; a.click();
             URL.revokeObjectURL(url);
         }
 
-        function exportCSV() {
-            if(!records.length) return;
-            const headers = ['Tarih', 'Baslangic', 'Bitis', 'Saat', 'Dakika'];
-            const rows = records.map(r => [r.date, r.start, r.end, r.hours, r.minutes]);
-            const csvContent = [headers.join(', '), ...rows.map(r => r.join(', '))].join('\n');
-            downloadFile(csvContent, `mesai_${currentUser.name}_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv;charset=utf-8;');
-            showToast('CSV indirildi');
+        function exportTXT(targetPerson) {
+            const isAll = targetPerson === 'ALL';
+            const data = isAll ? records : records.filter(r => r.person === targetPerson);
+            if(!data.length) return showToast('Dışa aktarılacak kayıt yok', true);
+            
+            let content = `Mesai Kayıtları Raporu\nOluşturulma: ${new Date().toLocaleDateString('tr-TR')}\n========================================\n\n`;
+            
+            const grouped = data.reduce((acc, r) => {
+                if(!acc[r.person]) acc[r.person] = [];
+                acc[r.person].push(r);
+                return acc;
+            }, {});
+
+            for(const [person, personRecords] of Object.entries(grouped)) {
+                content += `[ ${person.toUpperCase()} ]\n----------------------------------------\n`;
+                let pMins = 0;
+                personRecords.forEach(r => {
+                    pMins += (r.hours * 60) + r.minutes;
+                    content += `${r.date.split('-').reverse().join('.')} | ${r.start} - ${r.end} | ${r.hours}s ${r.minutes}dk\n`;
+                });
+                content += `> Toplam: ${Math.floor(pMins / 60)} saat ${pMins % 60} dakika\n\n`;
+            }
+            
+            const filename = isAll ? `tum_mesailer_${new Date().toISOString().split('T')[0]}.txt` : `mesai_${targetPerson}_${new Date().toISOString().split('T')[0]}.txt`;
+            downloadFile(content, filename, 'text/plain;charset=utf-8;');
+            showToast('TXT dosyası indirildi');
         }
 
-        function exportTXT() {
-            if(!records.length) return;
-            let content = `Mesai Kayitlari - ${currentUser.name}\nOlusturulma: ${new Date().toLocaleDateString('tr-TR')}\n----------------------------------------\n\n`;
-            records.forEach(r => {
-                content += `Tarih: ${r.date.split('-').reverse().join('.')}\nSaat: ${r.start} - ${r.end}\nSure: ${r.hours} saat ${r.minutes} dakika\n----------------------------------------\n`;
-            });
-            const totalMins = records.reduce((acc, r) => acc + (r.hours * 60) + r.minutes, 0);
-            content += `\nTOPLAM: ${Math.floor(totalMins / 60)} saat ${totalMins % 60} dakika\nKAYIT SAYISI: ${records.length}`;
-            downloadFile(content, `mesai_${currentUser.name}_${new Date().toISOString().split('T')[0]}.txt`, 'text/plain;charset=utf-8;');
-            showToast('TXT indirildi');
-        }
+        function exportNotes(targetPerson) {
+            const isAll = targetPerson === 'ALL';
+            const data = isAll ? records : records.filter(r => r.person === targetPerson);
+            if(!data.length) return showToast('Paylaşılacak kayıt yok', true);
+            
+            let content = isAll ? `📊 Tesis / Genel Mesai Raporu\n\n` : `👤 ${targetPerson} - Mesai Raporu\n\n`;
+            
+            const grouped = data.reduce((acc, r) => {
+                if(!acc[r.person]) acc[r.person] = [];
+                acc[r.person].push(r);
+                return acc;
+            }, {});
 
-        function exportNotes() {
-            if(!records.length) return;
-            let content = `Mesai Kayıtları - ${currentUser.name}\n\n`;
-            records.forEach(r => {
-                content += `📅 ${r.date.split('-').reverse().join('.')} | ⏰ ${r.start} - ${r.end} | ⏱️ ${r.hours}s ${r.minutes}dk\n`;
-            });
-            const totalMins = records.reduce((acc, r) => acc + (r.hours * 60) + r.minutes, 0);
-            content += `\n📊 Toplam: ${Math.floor(totalMins / 60)}s ${totalMins % 60}dk (${records.length} kayıt)`;
+            let globalMins = 0;
+
+            for(const [person, personRecords] of Object.entries(grouped)) {
+                if(isAll) content += `🔹 ${person}\n`;
+                let pMins = 0;
+                personRecords.forEach(r => {
+                    pMins += (r.hours * 60) + r.minutes;
+                    content += `▫️ ${r.date.split('-').reverse().join('.')} | ${r.start}-${r.end} | ${r.hours}s ${r.minutes}dk\n`;
+                });
+                globalMins += pMins;
+                content += `👉 Toplam: ${Math.floor(pMins / 60)}s ${pMins % 60}dk\n${isAll ? '\n' : ''}`;
+            }
+            
+            if(isAll && Object.keys(grouped).length > 1) {
+                content += `\n📌 GENEL TOPLAM: ${Math.floor(globalMins / 60)}s ${globalMins % 60}dk`;
+            }
             
             if (navigator.share) {
                 navigator.share({ title: 'Mesai Kayıtları', text: content }).catch(console.error);
             } else {
-                navigator.clipboard.writeText(content).then(() => showToast('Panoya kopyalandı'));
+                navigator.clipboard.writeText(content).then(() => showToast('Panoya kopyalandı! İstediğiniz yere yapıştırabilirsiniz.'));
             }
-        }
-
-        function processImport(text, type) {
-            let parsed = [];
-            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-            
-            if (type === 'csv') {
-                lines.slice(1).forEach(line => {
-                    const [date, start, end, hours, minutes] = line.split(',').map(s => s.trim());
-                    if (date && start && end) parsed.push({ date, start, end, hours: Number(hours), minutes: Number(minutes) });
-                });
-            } else {
-                let current = {};
-                lines.forEach(line => {
-                    if (line.startsWith('Tarih:')) current.date = line.split('Tarih:')[1].trim().split('.').reverse().join('-');
-                    if (line.startsWith('Saat:')) {
-                        const parts = line.split('Saat:')[1].split('-');
-                        current.start = parts[0].trim();
-                        current.end = parts[1].trim();
-                    }
-                    if (line.startsWith('Sure:')) {
-                        const match = line.match(/(\d+)\s*saat\s*(\d+)\s*dakika/);
-                        if (match) {
-                            current.hours = Number(match[1]);
-                            current.minutes = Number(match[2]);
-                            parsed.push({...current});
-                            current = {};
-                        }
-                    }
-                });
-            }
-
-            if (!parsed.length) return showToast('Geçerli kayıt bulunamadı', true);
-            
-            let added = 0, overlap = 0;
-            let currentRecords = [...records];
-            
-            parsed.forEach(p => {
-                if (!checkOverlap(p.date, p.start, p.end, currentRecords)) {
-                    currentRecords.push({ ...p, id: Date.now() + Math.random() });
-                    added++;
-                } else {
-                    overlap++;
-                }
-            });
-            
-            records = currentRecords.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
-            saveToStorage();
-            showToast(`${added} eklendi, ${overlap} çakışan atlandı`);
-        }
-
-        function importCSV(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => processImport(ev.target.result, 'csv');
-            reader.readAsText(file);
-            e.target.value = '';
-        }
-
-        function importTXT(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => processImport(ev.target.result, 'txt');
-            reader.readAsText(file);
-            e.target.value = '';
         }
     </script>
 </body>
