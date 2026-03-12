@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr" class="dark">
 <head>
+  <script type="module" src="/@vite/client"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesai Pro</title>
@@ -98,7 +100,7 @@
             position: relative;
         }
     </style>
-</head>
+<script src="/_aistudio-iframe.js"></script></head>
 <body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
     <!-- Canlı Arka Plan Efektleri -->
@@ -141,8 +143,8 @@
                     <i class="ph ph-clock text-xl"></i> Mesai Pro
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-400/30 text-orange-400 text-sm hover:bg-orange-400/10 transition-colors">
-                        <i class="ph ph-device-mobile"></i> Uygulamayı İndir
+                    <button onclick="downloadSourceCode()" class="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-400/30 text-orange-400 text-sm hover:bg-orange-400/10 transition-colors">
+                        <i class="ph ph-download-simple"></i> Kodu İndir
                     </button>
                     <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-inputbg border border-bordercol text-sm text-gray-300">
                         <div class="w-2 h-2 rounded-full bg-orange-400"></div>
@@ -345,6 +347,27 @@
         let records = [];
         let deleteTimeouts = {};
         let carouselInitialized = false;
+
+        function downloadSourceCode() {
+            fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'mesai-pro-tam-kod.html';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast('Kod başarıyla indirildi!');
+                })
+                .catch(err => {
+                    console.error('İndirme hatası:', err);
+                    showToast('Kod indirilirken bir hata oluştu.', true);
+                });
+        }
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -1086,4 +1109,23 @@
                         const hours = Number(match[5]);
                         const minutes = Number(match[6]);
                         
-                        if (date && start && end && !checkOverlap(date, start, end, person))
+                        if (date && start && end && !checkOverlap(date, start, end, person)) {
+                            records.push({ id: Date.now() + Math.random(), person, date, start, end, hours, minutes });
+                            added++;
+                        }
+                    }
+                });
+                if(added > 0) {
+                    records.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
+                    saveToStorage();
+                    showToast(`${added} kayıt eklendi.`);
+                } else {
+                    showToast('Yeni kayıt bulunamadı veya çakışıyor.', true);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+    </script>
+</body>
+</html>
