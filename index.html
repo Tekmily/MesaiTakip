@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr" class="dark">
 <head>
-  <script type="module" src="/@vite/client"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mesai Pro</title>
@@ -100,7 +98,7 @@
             position: relative;
         }
     </style>
-<script src="/_aistudio-iframe.js"></script></head>
+</head>
 <body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
     <!-- Canlı Arka Plan Efektleri -->
@@ -125,7 +123,8 @@
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="mb-6">
                     <label class="block text-sm text-gray-400 mb-2">Kullanıcı Adı</label>
-                    <input type="text" id="usernameInput" required 
+                    <input type="text" id="usernameInput" required autofocus minlength="3"
+                        oninput="this.value = this.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '')"
                         class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 focus:border-orange-400 outline-none transition-colors text-white" 
                         placeholder="Örn: yusuf">
                 </div>
@@ -143,13 +142,11 @@
                     <i class="ph ph-clock text-xl"></i> Mesai Pro
                 </div>
                 <div class="flex items-center gap-4">
-                    <button onclick="downloadSourceCode()" class="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-400/30 text-orange-400 text-sm hover:bg-orange-400/10 transition-colors">
-                        <i class="ph ph-download-simple"></i> Kodu İndir
-                    </button>
                     <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-inputbg border border-bordercol text-sm text-gray-300">
                         <div class="w-2 h-2 rounded-full bg-orange-400"></div>
                         <span id="displayUsername">yusuf</span>
                     </div>
+                    <button onclick="downloadApp()" class="text-gray-400 hover:text-orange-400 transition-colors" title="Uygulamayı İndir (HTML)"><i class="ph ph-download-simple text-lg"></i></button>
                     <button onclick="toggleTheme()" class="text-gray-400 hover:text-white transition-colors"><i id="themeIcon" class="ph ph-sun text-lg"></i></button>
                     <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-sign-out text-lg"></i></button>
                 </div>
@@ -348,27 +345,6 @@
         let deleteTimeouts = {};
         let carouselInitialized = false;
 
-        function downloadSourceCode() {
-            fetch(window.location.href)
-                .then(response => response.text())
-                .then(html => {
-                    const blob = new Blob([html], { type: 'text/html' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'mesai-pro-tam-kod.html';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    showToast('Kod başarıyla indirildi!');
-                })
-                .catch(err => {
-                    console.error('İndirme hatası:', err);
-                    showToast('Kod indirilirken bir hata oluştu.', true);
-                });
-        }
-
         function toggleTheme() {
             const html = document.documentElement;
             const icon = document.getElementById('themeIcon');
@@ -418,8 +394,30 @@
 
         function handleLogin(e) {
             e.preventDefault();
-            const name = document.getElementById('usernameInput').value.trim();
-            if (!name) return;
+            let name = document.getElementById('usernameInput').value.trim();
+            
+            // Fazla boşlukları tek boşluğa indir
+            name = name.replace(/\s+/g, ' ');
+
+            if (!name) {
+                showToast("Lütfen bir isim girin.", true);
+                return;
+            }
+
+            // Sadece harf ve boşluk kontrolü (Türkçe karakterler dahil)
+            const validNameRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ\s]+$/;
+            if (!validNameRegex.test(name)) {
+                showToast("İsim sadece harflerden oluşabilir. Rakam veya özel karakter kullanılamaz.", true);
+                return;
+            }
+
+            // En az 3 harf içermesi kontrolü (boşluklar hariç)
+            const letterCount = (name.match(/[a-zA-ZçğıöşüÇĞİÖŞÜ]/g) || []).length;
+            if (letterCount < 3) {
+                showToast("İsim en az 3 harften oluşmalıdır.", true);
+                return;
+            }
+
             currentUser = { id: name.toLowerCase().replace(/\s+/g, '-'), name };
             localStorage.setItem('mesai_user', JSON.stringify(currentUser));
             showDashboard();
@@ -428,12 +426,37 @@
         function handleLogout() {
             currentUser = null;
             localStorage.removeItem('mesai_user');
+            document.getElementById('dashboardScreen').classList.remove('flex');
             document.getElementById('dashboardScreen').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginScreen').classList.add('flex');
             document.getElementById('usernameInput').value = '';
+            setTimeout(() => document.getElementById('usernameInput').focus(), 100);
+        }
+
+        function downloadApp() {
+            fetch(window.location.href)
+                .then(res => res.text())
+                .then(html => {
+                    const blob = new Blob([html], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'MesaiPro.html';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast('Uygulama HTML olarak indirildi!');
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast('İndirme başarısız oldu.', true);
+                });
         }
 
         function showDashboard() {
+            document.getElementById('loginScreen').classList.remove('flex');
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboardScreen').classList.remove('hidden');
             document.getElementById('dashboardScreen').classList.add('flex');
