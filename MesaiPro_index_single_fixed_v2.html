@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesai Pro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                fontFamily: { sans: ['Inter', 'sans-serif'] },
+                extend: {
+                    colors: {
+                        orange: { 400: '#fb923c', 500: '#f97316' },
+                        darkbg: 'rgb(var(--c-bg) / <alpha-value>)',
+                        cardbg: 'rgb(var(--c-card) / <alpha-value>)',
+                        inputbg: 'rgb(var(--c-input) / <alpha-value>)',
+                        bordercol: 'rgb(var(--c-border) / <alpha-value>)',
+                        white: 'rgb(var(--c-text) / <alpha-value>)',
+                        gray: {
+                            300: 'rgb(var(--c-text-muted) / <alpha-value>)',
+                            400: 'rgb(var(--c-text-muted) / <alpha-value>)',
+                            500: 'rgb(var(--c-text-muted) / <alpha-value>)'
+                        }
+                    },
+                    animation: {
+                        blob: "blob 7s infinite",
+                    },
+                    keyframes: {
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
+    <style>
+        :root {
+            /* Gün Işığı (Aydınlık) Teması - Daha Dengeli ve Yumuşak */
+            --c-bg: 248, 250, 252;
+            --c-card: 255, 255, 255;
+            --c-input: 248, 250, 252;
+            --c-border: 241, 245, 249;
+            --c-text: 15, 23, 42;
+            --c-text-muted: 100, 116, 139;
+        }
+        html.dark {
+            /* Koyu Tema - Daha Dengeli ve Yumuşak (Slate) */
+            --c-bg: 15, 23, 42;
+            --c-card: 30, 41, 59;
+            --c-input: 30, 41, 59;
+            --c-border: 51, 65, 85;
+            --c-text: 248, 250, 252;
+            --c-text-muted: 148, 163, 184;
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: rgb(var(--c-bg));
+            color: rgb(var(--c-text));
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgb(var(--c-border)); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgb(var(--c-text-muted)); }
+        
+        html.dark input[type="date"]::-webkit-calendar-picker-indicator,
+        html.dark input[type="time"]::-webkit-calendar-picker-indicator { 
+            filter: invert(1); 
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        html:not(.dark) input[type="date"]::-webkit-calendar-picker-indicator,
+        html:not(.dark) input[type="time"]::-webkit-calendar-picker-indicator { 
+            filter: invert(0); 
+            opacity: 0.5;
+            cursor: pointer;
+        }
+        
+        input[type="date"], input[type="time"] {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Canlı Arka Plan Efektleri -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-orange-500/20 blur-[100px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-500/20 blur-[120px] animate-blob" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] rounded-full bg-purple-500/20 blur-[120px] animate-blob" style="animation-delay: 4s;"></div>
+    </div>
+
+    <div id="loginScreen" class="flex flex-1 items-center justify-center p-4 transition-opacity duration-500 relative">
+        <div class="absolute inset-0 z-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80');"></div>
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-darkbg/80 to-darkbg"></div>
+
+        <div class="bg-cardbg/40 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl w-full max-w-md border border-white/5 relative z-10 shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-orange-400/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-orange-400/20">
+                    <i class="ph ph-clock text-3xl text-orange-400"></i>
+                </div>
+                <h1 class="text-2xl font-medium tracking-tight">Mesai Pro</h1>
+                <p class="text-gray-400 mt-2 text-sm">Devam etmek için giriş yapın</p>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-6">
+                    <label class="block text-sm text-gray-400 mb-2">Kullanıcı Adı</label>
+                    <input type="text" id="usernameInput" required autofocus minlength="3"
+                        oninput="this.value = this.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '')"
+                        class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 focus:border-orange-400 outline-none transition-colors text-white" 
+                        placeholder="Örn: yusuf">
+                </div>
+                <button type="submit" class="w-full bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 rounded-3xl transition-colors shadow-lg shadow-orange-500/20">
+                    Giriş Yap
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardScreen" class="hidden flex-1 flex-col pb-20 fade-in relative">
+        <header class="border-b border-bordercol bg-darkbg/60 backdrop-blur-2xl sticky top-0 z-50">
+            <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-orange-400 font-medium text-lg">
+                    <i class="ph ph-clock text-xl"></i> Mesai Pro
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-inputbg border border-bordercol text-sm text-gray-300">
+                        <div class="w-2 h-2 rounded-full bg-orange-400"></div>
+                        <span id="displayUsername">yusuf</span>
+                    </div>
+                    <button onclick="toggleTheme()" class="text-gray-400 hover:text-white transition-colors"><i id="themeIcon" class="ph ph-sun text-lg"></i></button>
+                    <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-sign-out text-lg"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-5xl w-full mx-auto px-4 py-8 space-y-6 relative z-10">
+            
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
+                <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80');"></div>
+                <div class="absolute top-0 right-0 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none z-0"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="text-lg font-medium text-white flex items-center gap-2 mb-6">
+                        <i class="ph ph-plus text-orange-400"></i> Yeni Mesai Girişi
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-6 gap-6 mb-8">
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Kişi / Grup Adı</label>
+                            <div class="relative">
+                                <select id="personSelect" onchange="handlePersonSelectChange()" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors appearance-none">
+                                    <!-- Options will be populated by JS -->
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                                    <i class="ph ph-caret-down"></i>
+                                </div>
+                            </div>
+                            <input type="text" id="newPersonInput" class="hidden w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors mt-2" placeholder="Yeni kişi/grup adı">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Tarih</label>
+                            <input type="date" id="dateInput" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Saatlik Ücret (€)</label>
+                            <input type="number" id="hourlyRateInput" min="0" step="0.01" placeholder="Örn: 15.50" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Başlangıç</label>
+                            <input type="time" id="startInput" value="09:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Bitiş</label>
+                            <input type="time" id="endInput" value="17:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-sm text-gray-400 mb-2">Mola (Dakika)</label>
+                            <input type="number" id="breakInput" value="0" min="0" max="60" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-inputbg/60 backdrop-blur-md border border-bordercol/30 rounded-2xl gap-4">
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Hesaplanan Süre</div>
+                            <div id="durationDisplay" class="text-xl font-medium text-orange-400">8 saat 0 dakika</div>
+                        </div>
+                        <button onclick="saveRecord()" id="saveBtn" class="w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-black font-medium px-6 py-2.5 rounded-2xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-orange-500/20">
+                            <i class="ph ph-floppy-disk text-lg"></i> Kaydet
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
+                    <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80');"></div>
+                    
+                    <div class="relative z-10 flex-1 flex flex-col">
+                        <h2 class="text-lg font-medium text-white flex items-center gap-2 mb-6">
+                            <i class="ph ph-chart-line-up text-orange-400"></i> Özet
+                        </h2>
+                        <div class="space-y-4 flex-1 flex flex-col justify-center">
+                            <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
+                                <div class="text-sm text-gray-400 mb-2">Toplam Mesai (Tüm Gruplar)</div>
+                                <div class="text-4xl text-white font-light flex items-end justify-between">
+                                    <div>
+                                        <span id="totalH">0</span> <span class="text-xl text-gray-500 mr-2">sa</span> <span id="totalM">0</span> <span class="text-xl text-gray-500">dk</span>
+                                    </div>
+                                    <div id="totalEarnings" class="text-2xl text-green-400 hidden">
+                                        €0.00
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
+                                    <div class="text-sm text-gray-400 mb-2">Kayıt Sayısı</div>
+                                    <div id="totalCount" class="text-2xl text-white font-light">0</div>
+                                </div>
+                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
+                                    <div class="text-sm text-gray-400 mb-2">Grup Sayısı</div>
+                                    <div id="totalGroups" class="text-2xl text-white font-light">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
+                    <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80');"></div>
+                    
+                    <div class="relative z-10 flex-1 flex flex-col">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-medium text-white flex items-center gap-2">
+                                <i class="ph ph-briefcase text-orange-400"></i> Yakındaki İş İlanları
+                            </h2>
+                            <span id="locationBadge" onclick="toggleManualLocation()" class="text-xs bg-inputbg/80 backdrop-blur-sm text-gray-400 px-2 py-1 rounded border border-bordercol hidden flex items-center gap-1 cursor-pointer hover:text-white transition-colors" title="Konumu Değiştir">
+                                <i class="ph ph-map-pin"></i> <span id="locationText">Aranıyor...</span> <i class="ph ph-pencil-simple ml-1"></i>
+                            </span>
+                        </div>
+                        
+                        <div id="manualLocationContainer" class="hidden mb-4 flex items-center gap-2">
+                            <input type="text" id="manualLocationInput" placeholder="Şehir girin (Örn: İstanbul)" class="flex-1 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl px-3 py-1.5 text-sm text-white outline-none focus:border-orange-400 transition-colors" onkeypress="if(event.key === 'Enter') searchManualLocation()">
+                            <button onclick="searchManualLocation()" class="px-3 py-1.5 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-xl transition-colors border border-orange-400/20">
+                                Ara
+                            </button>
+                        </div>
+                        
+                        <div id="jobsContainer" class="space-y-3 flex-1 overflow-y-auto max-h-[250px] pr-2">
+                            <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8">
+                                <i class="ph ph-spinner animate-spin text-3xl mb-3 text-orange-400/50"></i>
+                                <p>Konumunuz bulunuyor ve ilanlar yükleniyor...</p>
+                                <button onclick="loadJobs()" class="mt-4 px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl hover:text-white transition-colors">
+                                    Konum İzni Ver
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
+                <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80');"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                        <h2 class="text-lg font-medium text-white flex items-center gap-2">
+                            <i class="ph ph-users text-orange-400"></i> Kişi / Grup Kayıtları
+                        </h2>
+                        
+                        <div class="flex flex-wrap items-center gap-2">
+                            <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="importCSV(event)">
+                            <input type="file" id="txtInput" accept=".txt" class="hidden" onchange="importTXT(event)">
+                            
+                            <button onclick="document.getElementById('csvInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
+                                <i class="ph ph-upload-simple"></i> CSV İçe
+                            </button>
+                            <button onclick="document.getElementById('txtInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
+                                <i class="ph ph-upload-simple"></i> TXT İçe
+                            </button>
+                            <button onclick="exportNotes('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
+                                <i class="ph ph-share-network"></i> Tümünü Paylaş
+                            </button>
+                            <button onclick="exportTXT('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
+                                <i class="ph ph-download-simple"></i> Tümünü TXT
+                            </button>
+                            <button onclick="exportCSV()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
+                                <i class="ph ph-download-simple"></i> Tümünü CSV
+                            </button>
+                            <button id="btn-clear-all" onclick="handleSmartDelete('all', this)" class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors ml-auto sm:ml-2" data-confirm="false">
+                                <i class="ph ph-trash"></i> Tümünü Sil
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="groupedRecordsContainer" class="space-y-6">
+                        <!-- Grouped records will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden mt-6 shadow-lg shadow-black/5">
+                <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80');"></div>
+                
+                <div class="relative z-10">
+                    <h2 class="text-lg font-medium text-white flex items-center gap-2 mb-6">
+                        <i class="ph ph-buildings text-orange-400"></i> İş Dünyasından Kesitler
+                    </h2>
+                    
+                    <div class="relative w-full h-64 sm:h-80 rounded-xl overflow-hidden bg-inputbg border border-bordercol shadow-inner">
+                        <div id="mediaCarousel" class="w-full h-full relative">
+                            <!-- Media items will be injected here by JS -->
+                        </div>
+                        
+                        <!-- Overlay gradient for aesthetic -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
+                            <p class="text-[#ffffff] opacity-80 text-sm font-medium tracking-wide">Motivasyon & Odak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-auto border-t border-bordercol bg-darkbg/60 backdrop-blur-2xl py-8">
+            <div class="max-w-5xl mx-auto px-4 flex flex-col items-center justify-center text-gray-500 text-sm gap-2">
+                <div class="w-10 h-10 bg-orange-400/10 rounded-full flex items-center justify-center border border-orange-400/20 mb-2">
+                    <i class="ph ph-code text-xl text-orange-400"></i>
+                </div>
+                <p class="font-medium text-gray-400">Yusuf TEKMİL tarafından yapılmıştır.</p>
+                <p>&copy; 2026 Tüm hakları saklıdır.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let records = [];
+        let deleteTimeouts = {};
+        let carouselInitialized = false;
+        let ytApiReady = false;
+        let ytPlayers = {};
+        let ytApiCallbacks = [];
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function safeFilename(value) {
+            return String(value ?? 'dosya').replace(/[\\/:*?"<>|]+/g, '_').trim() || 'dosya';
+        }
+
+        function csvEscape(value) {
+            const str = String(value ?? '');
+            return '"' + str.replace(/"/g, '""') + '"';
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const next = line[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && next === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+
+            result.push(current.trim());
+            return result;
+        }
+
+        function runWhenYouTubeReady(callback) {
+            if (ytApiReady && typeof YT !== 'undefined' && YT.Player) {
+                callback();
+            } else {
+                ytApiCallbacks.push(callback);
+            }
+        }
+
+        window.onYouTubeIframeAPIReady = function () {
+            ytApiReady = true;
+            const callbacks = [...ytApiCallbacks];
+            ytApiCallbacks = [];
+            callbacks.forEach(cb => {
+                try { cb(); } catch (error) { console.error('YT callback error:', error); }
+            });
+        };
+
+        function createYouTubePlayerForIframe(iframeId, videoId) {
+            runWhenYouTubeReady(() => {
+                if (ytPlayers[iframeId] || !document.getElementById(iframeId)) return;
+
+                ytPlayers[iframeId] = new YT.Player(iframeId, {
+                    events: {
+                        onReady: (event) => {
+                            try {
+                                event.target.mute();
+                                event.target.setLoop(true);
+                                event.target.playVideo();
+                            } catch (error) {
+                                console.error('YT ready error:', error);
+                            }
+                        }
+                    },
+                    playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        loop: 1,
+                        playlist: videoId,
+                        rel: 0,
+                        modestbranding: 1,
+                        playsinline: 1,
+                        enablejsapi: 1,
+                        mute: 1,
+                        origin: window.location.origin
+                    }
+                });
+            });
+        }
+
+        function playCarouselMedia(el) {
+            if (!el) return;
+            if (el.tagName === 'VIDEO') {
+                el.play().catch(() => {});
+                return;
+            }
+            if (el.tagName === 'IFRAME') {
+                const player = ytPlayers[el.id];
+                if (player && player.playVideo) {
+                    try {
+                        player.mute();
+                        player.playVideo();
+                        return;
+                    } catch (error) {
+                        console.error('YT play error:', error);
+                    }
+                }
+                el.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            }
+        }
+
+        function pauseCarouselMedia(el) {
+            if (!el) return;
+            if (el.tagName === 'VIDEO') {
+                try { el.pause(); } catch (error) {}
+                return;
+            }
+            if (el.tagName === 'IFRAME') {
+                const player = ytPlayers[el.id];
+                if (player && player.pauseVideo) {
+                    try { player.pauseVideo(); return; } catch (error) {
+                        console.error('YT pause error:', error);
+                    }
+                }
+                el.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                if(icon) icon.classList.replace('ph-sun', 'ph-moon');
+                localStorage.setItem('mesai_theme', 'light');
+            } else {
+                html.classList.add('dark');
+                if(icon) icon.classList.replace('ph-moon', 'ph-sun');
+                localStorage.setItem('mesai_theme', 'dark');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('mesai_theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+            document.addEventListener('DOMContentLoaded', () => {
+                const icon = document.getElementById('themeIcon');
+                if(icon) icon.classList.replace('ph-sun', 'ph-moon');
+            });
+        }
+
+        const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0];
+        document.getElementById('dateInput').value = today;
+        document.getElementById('dateInput').max = today;
+
+        const savedUser = localStorage.getItem('mesai_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showDashboard();
+        }
+
+        document.getElementById('startInput').addEventListener('input', updateDurationDisplay);
+        document.getElementById('endInput').addEventListener('input', updateDurationDisplay);
+        document.getElementById('breakInput').addEventListener('input', updateDurationDisplay);
+
+        function showToast(text, isError = false) {
+            Toastify({
+                text: text, duration: 3000, gravity: "bottom", position: "right",
+                style: {
+                    background: isError ? "#ef4444" : "#f97316", color: isError ? "#fff" : "#000",
+                    borderRadius: "1rem", padding: "12px 24px", fontWeight: "500",
+                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                }
+            }).showToast();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            let name = document.getElementById('usernameInput').value.trim();
+            
+            // Fazla boşlukları tek boşluğa indir
+            name = name.replace(/\s+/g, ' ');
+
+            if (!name) {
+                showToast("Lütfen bir isim girin.", true);
+                return;
+            }
+
+            // Sadece harf ve boşluk kontrolü (Türkçe karakterler dahil)
+            const validNameRegex = /^[a-zA-ZçğıöşüÇĞİÖŞÜ\s]+$/;
+            if (!validNameRegex.test(name)) {
+                showToast("İsim sadece harflerden oluşabilir. Rakam veya özel karakter kullanılamaz.", true);
+                return;
+            }
+
+            // En az 3 harf içermesi kontrolü (boşluklar hariç)
+            const letterCount = (name.match(/[a-zA-ZçğıöşüÇĞİÖŞÜ]/g) || []).length;
+            if (letterCount < 3) {
+                showToast("İsim en az 3 harften oluşmalıdır.", true);
+                return;
+            }
+
+            currentUser = { id: name.toLowerCase().replace(/\s+/g, '-'), name };
+            localStorage.setItem('mesai_user', JSON.stringify(currentUser));
+            showDashboard();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('mesai_user');
+            document.getElementById('dashboardScreen').classList.remove('flex');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginScreen').classList.add('flex');
+            document.getElementById('usernameInput').value = '';
+            setTimeout(() => document.getElementById('usernameInput').focus(), 100);
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.remove('flex');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            document.getElementById('dashboardScreen').classList.add('flex');
+            document.getElementById('displayUsername').innerText = currentUser.name;
+            loadRecords();
+            loadJobs();
+            initCarousel();
+        }
+
+        function initCarousel() {
+            if (carouselInitialized) return;
+            carouselInitialized = true;
+            
+            const container = document.getElementById('mediaCarousel');
+            if (!container) return;
+            
+            const mediaList = [
+                { type: 'image', url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1000&q=80' },
+                { type: 'youtube', videoId: 'zpOULjyy-n8' }, // Şehir/İş dünyası
+                { type: 'image', url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1000&q=80' },
+                { type: 'youtube', videoId: 'W0LHTWG-UmQ' }, // Ofis çalışması
+                { type: 'image', url: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1000&q=80' }
+            ];
+            
+            let currentMediaIndex = 0;
+            
+            mediaList.forEach((media, index) => {
+                let el;
+                if (media.type === 'video') {
+                    el = document.createElement('video');
+                    el.src = media.url;
+                    el.muted = true;
+                    el.loop = true;
+                    el.playsInline = true;
+                } else if (media.type === 'youtube') {
+                    el = document.createElement('iframe');
+                    el.src = `https://www.youtube.com/embed/${media.videoId}?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=${media.videoId}&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(window.location.origin)}`;
+                    el.allow = "autoplay; encrypted-media; picture-in-picture";
+                    el.frameBorder = "0";
+                    el.referrerPolicy = 'strict-origin-when-cross-origin';
+                } else {
+                    el = document.createElement('img');
+                    el.src = media.url;
+                }
+                
+                // pointer-events-none ile kullanıcının videoyu durdurmasını engelliyoruz (arkaplan efekti)
+                el.className = `absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
+                el.id = `carousel-media-${index}`;
+                container.appendChild(el);
+
+                if (media.type === 'youtube') {
+                    createYouTubePlayerForIframe(el.id, media.videoId);
+                }
+            });
+
+            const firstEl = document.getElementById('carousel-media-0');
+            playCarouselMedia(firstEl);
+
+            setInterval(() => {
+                const prevIndex = currentMediaIndex;
+                currentMediaIndex = (currentMediaIndex + 1) % mediaList.length;
+                
+                const prevEl = document.getElementById(`carousel-media-${prevIndex}`);
+                const currEl = document.getElementById(`carousel-media-${currentMediaIndex}`);
+                
+                if (prevEl) prevEl.classList.replace('opacity-100', 'opacity-0');
+                if (currEl) {
+                    currEl.classList.replace('opacity-0', 'opacity-100');
+                    playCarouselMedia(currEl);
+                }
+                
+                if (prevEl) {
+                    setTimeout(() => pauseCarouselMedia(prevEl), 1000);
+                }
+            }, 5000);
+        }
+
+        function loadJobs() {
+            const container = document.getElementById('jobsContainer');
+            const manualContainer = document.getElementById('manualLocationContainer');
+            
+            if(manualContainer) manualContainer.classList.add('hidden');
+            
+            container.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8">
+                    <i class="ph ph-spinner animate-spin text-3xl mb-3 text-orange-400"></i>
+                    <p>Konum aranıyor...</p>
+                </div>
+            `;
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    try {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await res.json();
+                        
+                        const city = data.address.city || data.address.town || data.address.province || data.address.state || 'Bulunduğunuz Bölge';
+                        const countryCode = data.address.country_code || 'global';
+                        
+                        fetchJobsForCity(city, countryCode);
+
+                    } catch (e) {
+                        showJobsError("Konum bilgisi alınamadı.");
+                    }
+                }, (error) => {
+                    showJobsError("Konum izni verilmedi. İlanları görmek için tarayıcı ayarlarından izin verin veya konumu elle girin.");
+                });
+            } else {
+                showJobsError("Tarayıcınız konum özelliğini desteklemiyor.");
+            }
+        }
+
+        async function fetchJobsForCity(city, countryCode) {
+            const container = document.getElementById('jobsContainer');
+            const badge = document.getElementById('locationBadge');
+            const locText = document.getElementById('locationText');
+            const manualContainer = document.getElementById('manualLocationContainer');
+            
+            badge.classList.remove('hidden');
+            locText.innerText = city;
+            if(manualContainer) manualContainer.classList.add('hidden');
+
+            container.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8">
+                    <i class="ph ph-spinner animate-spin text-3xl mb-3 text-orange-400"></i>
+                    <p>İlanlar çekiliyor...</p>
+                </div>
+            `;
+
+            let jobs = [];
+            let cc = countryCode.toLowerCase();
+            
+            try {
+                if (['us', 'gb', 'ca', 'au'].includes(cc)) {
+                    // The Muse API
+                    const res = await fetch(`https://www.themuse.com/api/public/jobs?location=${encodeURIComponent(city)}&page=1`);
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        jobs = data.results.slice(0, 10).map(j => ({
+                            title: j.name,
+                            company: j.company.name,
+                            type: j.levels && j.levels.length > 0 ? j.levels[0].name : 'Tam Zamanlı',
+                            url: j.refs.landing_page
+                        }));
+                    }
+                } else if (['de', 'at', 'ch'].includes(cc)) {
+                    // Arbeitnow API
+                    const res = await fetch(`https://www.arbeitnow.com/api/job-board-api`);
+                    const data = await res.json();
+                    if (data.data && data.data.length > 0) {
+                        const cityLower = city.toLowerCase();
+                        const filtered = data.data.filter(j => j.location.toLowerCase().includes(cityLower));
+                        const results = filtered.length > 0 ? filtered : data.data;
+                        jobs = results.slice(0, 10).map(j => ({
+                            title: j.title,
+                            company: j.company_name,
+                            type: j.job_types && j.job_types.length > 0 ? j.job_types[0] : 'Tam Zamanlı',
+                            url: j.url
+                        }));
+                    }
+                } else {
+                    // Remotive API (Global/Remote) - good for TR and others
+                    const res = await fetch(`https://remotive.com/api/remote-jobs?search=${encodeURIComponent(city)}`);
+                    const data = await res.json();
+                    if (data.jobs && data.jobs.length > 0) {
+                        jobs = data.jobs.slice(0, 10).map(j => ({
+                            title: j.title,
+                            company: j.company_name,
+                            type: j.job_type ? j.job_type.replace('_', ' ') : 'Uzaktan',
+                            url: j.url
+                        }));
+                    }
+                }
+            } catch (e) {
+                console.error("API Error:", e);
+            }
+
+            // Fallback to Google Jobs if API fails or returns 0 results
+            if (jobs.length === 0) {
+                const jobTitles = [
+                    { title: 'Satış Danışmanı', type: 'Tam Zamanlı' },
+                    { title: 'Kurye / Dağıtım', type: 'Yarı Zamanlı' },
+                    { title: 'Müşteri Temsilcisi', type: 'Uzaktan / Hibrit' },
+                    { title: 'Depo Görevlisi', type: 'Tam Zamanlı' },
+                    { title: 'Ön Muhasebe', type: 'Tam Zamanlı' }
+                ];
+                jobs = jobTitles.map(j => ({
+                    title: j.title,
+                    company: 'Çeşitli Firmalar',
+                    type: j.type,
+                    url: `https://www.google.com/search?q=${encodeURIComponent(j.title + ' iş ilanları ' + city)}&ibp=htl;jobs`
+                }));
+            }
+
+            renderJobs(jobs, city);
+        }
+
+        function renderJobs(jobs, city) {
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = '';
+            
+            jobs.forEach(job => {
+                container.innerHTML += `
+                    <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-orange-400/50 transition-colors group">
+                        <div class="flex-1 min-w-0 pr-4">
+                            <h3 class="text-white font-medium group-hover:text-orange-400 transition-colors truncate" title="${job.title}">${job.title}</h3>
+                            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                                <span class="text-gray-400 text-xs flex items-center gap-1 truncate max-w-[150px]" title="${job.company}"><i class="ph ph-buildings"></i> ${job.company}</span>
+                                <span class="w-1 h-1 rounded-full bg-bordercol"></span>
+                                <span class="text-gray-400 text-xs flex items-center gap-1"><i class="ph ph-map-pin"></i> ${city}</span>
+                                <span class="w-1 h-1 rounded-full bg-bordercol"></span>
+                                <span class="text-gray-400 text-xs capitalize">${job.type}</span>
+                            </div>
+                        </div>
+                        <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-xl transition-colors text-center border border-orange-400/20 flex items-center justify-center gap-2 whitespace-nowrap">
+                            Başvur <i class="ph ph-arrow-up-right"></i>
+                        </a>
+                    </div>
+                `;
+            });
+        }
+
+        function showJobsError(msg) {
+            const container = document.getElementById('jobsContainer');
+            const badge = document.getElementById('locationBadge');
+            if(badge) badge.classList.add('hidden');
+            
+            container.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8 text-center px-4">
+                    <i class="ph ph-warning-circle text-3xl mb-3 text-red-400/50"></i>
+                    <p>${msg}</p>
+                    <div class="flex flex-wrap justify-center gap-2 mt-4">
+                        <button onclick="loadJobs()" class="px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl hover:text-white transition-colors">
+                            Otomatik Bul
+                        </button>
+                        <button onclick="toggleManualLocation()" class="px-4 py-2 bg-orange-400/10 text-orange-400 border border-orange-400/20 rounded-xl hover:bg-orange-400/20 transition-colors">
+                            Elle Gir
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleManualLocation() {
+            const manualContainer = document.getElementById('manualLocationContainer');
+            if(manualContainer) {
+                manualContainer.classList.toggle('hidden');
+                if (!manualContainer.classList.contains('hidden')) {
+                    document.getElementById('manualLocationInput').focus();
+                }
+            }
+        }
+
+        async function searchManualLocation() {
+            const input = document.getElementById('manualLocationInput');
+            const query = input.value.trim();
+            if (!query) return showToast('Lütfen bir şehir girin', true);
+            
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8">
+                    <i class="ph ph-spinner animate-spin text-3xl mb-3 text-orange-400"></i>
+                    <p>Konum çözümleniyor...</p>
+                </div>
+            `;
+            
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=1`);
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    const city = data[0].address.city || data[0].address.town || data[0].address.province || data[0].address.state || query;
+                    const countryCode = data[0].address.country_code || 'global';
+                    fetchJobsForCity(city, countryCode);
+                } else {
+                    fetchJobsForCity(query, 'global');
+                }
+            } catch (e) {
+                fetchJobsForCity(query, 'global');
+            }
+        }
+
+        function loadRecords() {
+            const saved = localStorage.getItem(`mesai_records_v5_${currentUser.id}`);
+            records = saved ? JSON.parse(saved) : [];
+            updatePersonSelect();
+            renderGroupedRecords();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem(`mesai_records_v5_${currentUser.id}`, JSON.stringify(records));
+            updatePersonSelect();
+            renderGroupedRecords();
+        }
+
+        function updatePersonSelect() {
+            const select = document.getElementById('personSelect');
+            const currentVal = select.value;
+            
+            const persons = new Set([currentUser.name]);
+            records.forEach(r => {
+                if(r.person) persons.add(r.person);
+            });
+
+            select.innerHTML = '';
+            Array.from(persons).sort().forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                select.appendChild(opt);
+            });
+            
+            const newOpt = document.createElement('option');
+            newOpt.value = "new";
+            newOpt.textContent = "+ Yeni Kişi/Grup Ekle";
+            select.appendChild(newOpt);
+
+            if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
+                select.value = currentVal;
+            } else {
+                select.value = currentUser.name;
+            }
+            handlePersonSelectChange();
+        }
+
+        function handlePersonSelectChange() {
+            const select = document.getElementById('personSelect');
+            const input = document.getElementById('newPersonInput');
+            if (select.value === 'new') {
+                input.classList.remove('hidden');
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+            }
+        }
+
+        function calculateDuration(start, end, breakMins = 0) {
+            if (!start || !end) return { valid: false, message: 'Saatleri girin' };
+            let [sH, sM] = start.split(':').map(Number);
+            let [eH, eM] = end.split(':').map(Number);
+            let startMins = sH * 60 + sM;
+            let endMins = eH * 60 + eM;
+            if (endMins < startMins) endMins += 24 * 60; 
+            let diff = endMins - startMins - parseInt(breakMins || 0);
+            if (diff < 0) return { valid: false, message: 'Mola süresi çalışma süresinden fazla olamaz' };
+            let h = Math.floor(diff / 60);
+            let m = diff % 60;
+            return { valid: true, hours: h, minutes: m, text: `${h} saat ${m} dakika` };
+        }
+
+        function updateDurationDisplay() {
+            const res = calculateDuration(document.getElementById('startInput').value, document.getElementById('endInput').value, document.getElementById('breakInput').value);
+            const display = document.getElementById('durationDisplay');
+            const btn = document.getElementById('saveBtn');
+            if (res.valid) {
+                if (res.hours > 18 || (res.hours === 18 && res.minutes > 0)) {
+                    display.innerHTML = `<span class="text-red-500">Maks. 18 saat</span>`;
+                    btn.disabled = true; btn.classList.add('opacity-50');
+                } else {
+                    display.innerHTML = res.text;
+                    btn.disabled = false; btn.classList.remove('opacity-50');
+                }
+            } else {
+                display.innerHTML = `<span class="text-red-500">${res.message}</span>`;
+                btn.disabled = true; btn.classList.add('opacity-50');
+            }
+        }
+
+        function checkOverlap(newDate, newStart, newEnd, person) {
+            const getTs = (d, s, e) => {
+                const st = new Date(`${d}T${s}`).getTime();
+                let et = new Date(`${d}T${e}`).getTime();
+                if (e < s) et += 24 * 60 * 60 * 1000;
+                return { st, et };
+            };
+            const { st: nSt, et: nEt } = getTs(newDate, newStart, newEnd);
+            for (let r of records) {
+                if (r.person === person) {
+                    const { st: rSt, et: rEt } = getTs(r.date, r.start, r.end);
+                    if (nSt < rEt && nEt > rSt) return true;
+                }
+            }
+            return false;
+        }
+
+        function saveRecord() {
+            const date = document.getElementById('dateInput').value;
+            const start = document.getElementById('startInput').value;
+            const end = document.getElementById('endInput').value;
+            const breakMins = document.getElementById('breakInput').value || 0;
+            const hourlyRate = document.getElementById('hourlyRateInput').value || 0;
+            const selectVal = document.getElementById('personSelect').value;
+            const newVal = document.getElementById('newPersonInput').value.trim();
+            
+            let person = selectVal;
+            if (selectVal === 'new') {
+                if (!newVal) return showToast('Lütfen yeni kişi/grup adını girin', true);
+                person = newVal;
+            }
+            
+            if (date > today) return showToast('Gelecek tarihlere mesai ekleyemezsiniz.', true);
+            
+            const res = calculateDuration(start, end, breakMins);
+            if (!res.valid || res.hours > 18 || (res.hours === 18 && res.minutes > 0)) return;
+            
+            if (checkOverlap(date, start, end, person)) return showToast(`Bu saat aralığı ${person} için çakışıyor!`, true);
+            
+            records.push({ id: Date.now(), person, date, start, end, breakMins: parseInt(breakMins), hourlyRate: parseFloat(hourlyRate), hours: res.hours, minutes: res.minutes });
+            records.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
+            
+            saveToStorage();
+            showToast('Mesai başarıyla kaydedildi');
+        }
+
+        function deleteRecord(id) {
+            records = records.filter(r => r.id !== id);
+            saveToStorage();
+            showToast('Kayıt silindi');
+        }
+
+        function handleSmartDelete(targetId, btnElement) {
+            const isConfirmed = btnElement.getAttribute('data-confirm') === 'true';
+            
+            if (!isConfirmed) {
+                btnElement.setAttribute('data-confirm', 'true');
+                const originalHTML = btnElement.innerHTML;
+                const originalClasses = btnElement.className;
+                
+                btnElement.innerHTML = `<i class="ph ph-warning"></i> Emin misiniz?`;
+                btnElement.className = `px-3 py-2 bg-red-500 text-[#ffffff] text-sm font-medium rounded-xl flex items-center gap-2 transition-colors ${targetId === 'all' ? 'ml-auto sm:ml-2' : ''}`;
+                
+                if (deleteTimeouts[targetId]) clearTimeout(deleteTimeouts[targetId]);
+                
+                deleteTimeouts[targetId] = setTimeout(() => {
+                    btnElement.setAttribute('data-confirm', 'false');
+                    btnElement.innerHTML = originalHTML;
+                    btnElement.className = originalClasses;
+                }, 3000);
+            } else {
+                clearTimeout(deleteTimeouts[targetId]);
+                if (targetId === 'all') {
+                    records = [];
+                    showToast('Tüm kayıtlar temizlendi');
+                } else {
+                    records = records.filter(r => r.person !== targetId);
+                    showToast(`${targetId} kayıtları silindi`);
+                }
+                saveToStorage();
+            }
+        }
+
+        function renderGroupedRecords() {
+            const container = document.getElementById('groupedRecordsContainer');
+            container.innerHTML = '';
+            
+            let globalTotalMins = 0;
+            let globalTotalEarnings = 0;
+            const grouped = {};
+            
+            records.forEach(r => {
+                const p = r.person || currentUser.name;
+                if (!grouped[p]) grouped[p] = [];
+                grouped[p].push(r);
+                const mins = (r.hours * 60) + r.minutes;
+                globalTotalMins += mins;
+                if (r.hourlyRate) {
+                    globalTotalEarnings += (mins / 60) * r.hourlyRate;
+                }
+            });
+
+            const groupNames = Object.keys(grouped).sort();
+            
+            if (groupNames.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-gray-500 bg-inputbg/40 backdrop-blur-md rounded-2xl border border-bordercol/50">Kayıt bulunmuyor.</div>`;
+            } else {
+                groupNames.forEach(person => {
+                    const personRecords = grouped[person];
+                    let personMins = 0;
+                    let personEarnings = 0;
+                    personRecords.forEach(r => {
+                        const mins = (r.hours * 60) + r.minutes;
+                        personMins += mins;
+                        if (r.hourlyRate) {
+                            personEarnings += (mins / 60) * r.hourlyRate;
+                        }
+                    });
+                    
+                    let tbodyHTML = '';
+                    personRecords.forEach(r => {
+                        let earningsHTML = '';
+                        if (r.hourlyRate) {
+                            const earnings = ((r.hours * 60 + r.minutes) / 60) * r.hourlyRate;
+                            earningsHTML = `<span class="text-green-400 ml-2">€${earnings.toFixed(2)}</span>`;
+                        }
+                        tbodyHTML += `
+                            <tr class="hover:bg-inputbg/80 transition-colors group">
+                                <td class="px-4 py-3 text-gray-300">${escapeHtml(r.date.split('-').reverse().join('.'))}</td>
+                                <td class="px-4 py-3 text-gray-400">${escapeHtml(r.start)}</td>
+                                <td class="px-4 py-3 text-gray-400">${escapeHtml(r.end)}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded bg-orange-400/10 text-orange-400 font-medium text-xs border border-orange-400/20">
+                                        ${escapeHtml(`${r.hours}s ${r.minutes}dk ${r.breakMins ? `(-${r.breakMins}dk mola)` : ''}`)}
+                                    </span>
+                                    ${earningsHTML}
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <button data-record-id="${r.id}" class="record-delete-btn p-1.5 text-gray-500 hover:text-red-500 transition-colors">
+                                        <i class="ph ph-trash text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    const safePersonId = person.replace(/[^a-zA-Z0-9]/g, '_');
+                    const personEscaped = escapeHtml(person);
+                    const personEncoded = encodeURIComponent(person);
+
+                    container.innerHTML += `
+                        <div class="bg-inputbg/40 backdrop-blur-md border border-bordercol/50 rounded-2xl overflow-hidden">
+                            <div class="bg-inputbg/60 p-4 border-b border-bordercol/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-white font-medium text-lg flex items-center gap-2">
+                                        <i class="ph ph-user text-orange-400"></i> ${personEscaped}
+                                    </h3>
+                                    <div class="text-sm text-gray-400 mt-1">
+                                        Toplam: <span class="text-orange-400 font-medium">${Math.floor(personMins/60)}s ${personMins%60}dk</span> 
+                                        ${personEarnings > 0 ? `<span class="text-green-400 font-medium ml-2">€${personEarnings.toFixed(2)}</span>` : ''}
+                                        <span class="mx-2">•</span> ${personRecords.length} kayıt
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button data-person="${personEncoded}" class="export-notes-btn p-2 bg-cardbg hover:bg-bordercol border border-bordercol/50 text-gray-300 rounded-xl transition-colors" title="Paylaş">
+                                        <i class="ph ph-share-network"></i>
+                                    </button>
+                                    <button data-person="${personEncoded}" class="export-txt-btn p-2 bg-cardbg hover:bg-bordercol border border-bordercol/50 text-gray-300 rounded-xl transition-colors" title="TXT İndir">
+                                        <i class="ph ph-download-simple"></i>
+                                    </button>
+                                    <button id="btn-del-${safePersonId}" data-person="${personEncoded}" class="group-delete-btn p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-xl transition-colors" data-confirm="false" title="Grubu Sil">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm whitespace-nowrap">
+                                    <thead class="text-gray-500 border-b border-bordercol/50">
+                                        <tr>
+                                            <th class="px-4 py-2 font-medium">Tarih</th>
+                                            <th class="px-4 py-2 font-medium">Başlangıç</th>
+                                            <th class="px-4 py-2 font-medium">Bitiş</th>
+                                            <th class="px-4 py-2 font-medium">Süre</th>
+                                            <th class="px-4 py-2 font-medium text-right">İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-bordercol/50">
+                                        ${tbodyHTML}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            container.querySelectorAll('.record-delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteRecord(Number(btn.dataset.recordId)));
+            });
+
+            container.querySelectorAll('.export-notes-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportNotes(decodeURIComponent(btn.dataset.person)));
+            });
+
+            container.querySelectorAll('.export-txt-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportTXT(decodeURIComponent(btn.dataset.person)));
+            });
+
+            container.querySelectorAll('.group-delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => handleSmartDelete(decodeURIComponent(btn.dataset.person), btn));
+            });
+            
+            document.getElementById('totalH').innerText = Math.floor(globalTotalMins / 60);
+            document.getElementById('totalM').innerText = globalTotalMins % 60;
+            document.getElementById('totalCount').innerText = records.length;
+            document.getElementById('totalGroups').innerText = groupNames.length;
+            
+            const totalEarningsEl = document.getElementById('totalEarnings');
+            if (globalTotalEarnings > 0) {
+                totalEarningsEl.innerText = `€${globalTotalEarnings.toFixed(2)}`;
+                totalEarningsEl.classList.remove('hidden');
+            } else {
+                totalEarningsEl.classList.add('hidden');
+            }
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+                a.remove();
+            }, 1000);
+        }
+
+        function exportCSV() {
+            if(!records.length) return showToast('Dışa aktarılacak kayıt yok', true);
+            const headers = ['Kisi/Grup', 'Tarih', 'Baslangic', 'Bitis', 'Saat', 'Dakika'];
+            const rows = records.map(r => [r.person || currentUser.name, r.date, r.start, r.end, r.hours, r.minutes]);
+            const csvContent = [headers.map(csvEscape).join(','), ...rows.map(r => r.map(csvEscape).join(','))].join('\n');
+            downloadFile(csvContent, `mesai_tum_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv;charset=utf-8;');
+            showToast('CSV indirildi');
+        }
+
+        function exportTXT(targetPerson) {
+            let targetRecords = records;
+            let filename = `mesai_tum_${new Date().toISOString().split('T')[0]}.txt`;
+            let title = `Tüm Mesai Kayıtları Raporu`;
+
+            if (targetPerson !== 'all') {
+                targetRecords = records.filter(r => r.person === targetPerson);
+                filename = `mesai_${safeFilename(targetPerson)}_${new Date().toISOString().split('T')[0]}.txt`;
+                title = `Mesai Kayıtları Raporu - ${targetPerson}`;
+            }
+
+            if(!targetRecords.length) return showToast('Dışa aktarılacak kayıt yok', true);
+            
+            let content = `${title}\nOluşturulma: ${new Date().toLocaleDateString('tr-TR')}\n========================================\n\n`;
+            let pMins = 0;
+            targetRecords.forEach(r => {
+                pMins += (r.hours * 60) + r.minutes;
+                content += `${targetPerson === 'all' ? `[${r.person}] ` : ''}${r.date.split('-').reverse().join('.')} | ${r.start} - ${r.end} | ${r.hours}s ${r.minutes}dk\n`;
+            });
+            content += `\n> Toplam: ${Math.floor(pMins / 60)} saat ${pMins % 60} dakika\n`;
+            downloadFile(content, filename, 'text/plain;charset=utf-8;');
+            showToast('TXT indirildi');
+        }
+
+        function exportNotes(targetPerson) {
+            let targetRecords = records;
+            let title = `📊 Tüm Mesai Raporu`;
+
+            if (targetPerson !== 'all') {
+                targetRecords = records.filter(r => r.person === targetPerson);
+                title = `📊 Mesai Raporu - ${targetPerson}`;
+            }
+
+            if(!targetRecords.length) return showToast('Paylaşılacak kayıt yok', true);
+            
+            let content = `${title}\n\n`;
+            let pMins = 0;
+            targetRecords.forEach(r => {
+                pMins += (r.hours * 60) + r.minutes;
+                content += `▫️ ${targetPerson === 'all' ? `*${r.person}* ` : ''}${r.date.split('-').reverse().join('.')} | ${r.start}-${r.end} | ${r.hours}s ${r.minutes}dk\n`;
+            });
+            content += `\n👉 Toplam: ${Math.floor(pMins / 60)}s ${pMins % 60}dk\n`;
+            
+            if (navigator.share) {
+                navigator.share({ title: title, text: content }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(content).then(() => showToast('Panoya kopyalandı!'));
+            }
+        }
+
+        function importCSV(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const lines = ev.target.result.split('\n').map(l => l.trim()).filter(Boolean);
+                let added = 0;
+                lines.slice(1).forEach(line => {
+                    let parts = parseCSVLine(line);
+                    let person = currentUser.name, date, start, end, hours, minutes;
+                    
+                    if(parts.length >= 5) {
+                        if (parts.length === 6) {
+                            [person, date, start, end, hours, minutes] = parts;
+                        } else {
+                            [date, start, end, hours, minutes] = parts;
+                        }
+                        
+                        if (date && start && end && !checkOverlap(date, start, end, person)) {
+                            records.push({ id: Date.now() + Math.random(), person, date, start, end, hours: Number(hours), minutes: Number(minutes) });
+                            added++;
+                        }
+                    }
+                });
+                if(added > 0) {
+                    records.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
+                    saveToStorage();
+                    showToast(`${added} kayıt eklendi.`);
+                } else {
+                    showToast('Yeni kayıt bulunamadı veya çakışıyor.', true);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        function importTXT(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const lines = ev.target.result.split('\n').map(l => l.trim()).filter(Boolean);
+                let added = 0;
+                lines.forEach(line => {
+                    const match = line.match(/(?:\[(.*?)\]\s*)?(\d{2}\.\d{2}\.\d{4})\s*\|\s*(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})\s*\|\s*(\d+)s\s*(\d+)dk/);
+                    if (match) {
+                        const person = match[1] || currentUser.name;
+                        const date = match[2].split('.').reverse().join('-');
+                        const start = match[3];
+                        const end = match[4];
+                        const hours = Number(match[5]);
+                        const minutes = Number(match[6]);
+                        
+                        if (date && start && end && !checkOverlap(date, start, end, person)) {
+                            records.push({ id: Date.now() + Math.random(), person, date, start, end, hours, minutes });
+                            added++;
+                        }
+                    }
+                });
+                if(added > 0) {
+                    records.sort((a, b) => a.date === b.date ? b.start.localeCompare(a.start) : b.date.localeCompare(a.date));
+                    saveToStorage();
+                    showToast(`${added} kayıt eklendi.`);
+                } else {
+                    showToast('Yeni kayıt bulunamadı veya çakışıyor.', true);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+    </script>
+</body>
+</html>
