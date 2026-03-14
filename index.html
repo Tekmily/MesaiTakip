@@ -52,20 +52,20 @@
     
     <style>
         :root {
-            /* Gün Işığı (Aydınlık) Teması - Daha Canlı ve Ferah */
+            /* Gün Işığı (Aydınlık) Teması - Daha Dengeli ve Yumuşak */
             --c-bg: 248, 250, 252;
             --c-card: 255, 255, 255;
-            --c-input: 255, 255, 255;
-            --c-border: 226, 232, 240;
+            --c-input: 248, 250, 252;
+            --c-border: 241, 245, 249;
             --c-text: 15, 23, 42;
             --c-text-muted: 100, 116, 139;
         }
         html.dark {
-            /* Koyu Lacivert Teması - Daha Derin ve Canlı */
-            --c-bg: 8, 15, 37;
-            --c-card: 16, 25, 53;
-            --c-input: 23, 37, 84;
-            --c-border: 30, 58, 138;
+            /* Koyu Tema - Daha Dengeli ve Yumuşak (Slate) */
+            --c-bg: 15, 23, 42;
+            --c-card: 30, 41, 59;
+            --c-input: 30, 41, 59;
+            --c-border: 51, 65, 85;
             --c-text: 248, 250, 252;
             --c-text-muted: 148, 163, 184;
         }
@@ -112,7 +112,7 @@
         <div class="absolute inset-0 z-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80');"></div>
         <div class="absolute inset-0 z-0 bg-gradient-to-b from-darkbg/80 to-darkbg"></div>
 
-        <div class="bg-cardbg/40 backdrop-blur-2xl p-8 sm:p-10 rounded-2xl w-full max-w-md border border-white/10 relative z-10 shadow-2xl">
+        <div class="bg-cardbg/40 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl w-full max-w-md border border-white/5 relative z-10 shadow-2xl">
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-orange-400/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-orange-400/20">
                     <i class="ph ph-clock text-3xl text-orange-400"></i>
@@ -125,10 +125,10 @@
                     <label class="block text-sm text-gray-400 mb-2">Kullanıcı Adı</label>
                     <input type="text" id="usernameInput" required autofocus minlength="3"
                         oninput="this.value = this.value.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜ\s]/g, '')"
-                        class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 focus:border-orange-400 outline-none transition-colors text-white" 
+                        class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 focus:border-orange-400 outline-none transition-colors text-white" 
                         placeholder="Örn: yusuf">
                 </div>
-                <button type="submit" class="w-full bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 rounded-xl transition-colors shadow-lg shadow-orange-500/20">
+                <button type="submit" class="w-full bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 rounded-3xl transition-colors shadow-lg shadow-orange-500/20">
                     Giriş Yap
                 </button>
             </form>
@@ -146,7 +146,6 @@
                         <div class="w-2 h-2 rounded-full bg-orange-400"></div>
                         <span id="displayUsername">yusuf</span>
                     </div>
-                    <button onclick="downloadApp()" class="text-gray-400 hover:text-orange-400 transition-colors" title="Uygulamayı İndir (HTML)"><i class="ph ph-download-simple text-lg"></i></button>
                     <button onclick="toggleTheme()" class="text-gray-400 hover:text-white transition-colors"><i id="themeIcon" class="ph ph-sun text-lg"></i></button>
                     <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-sign-out text-lg"></i></button>
                 </div>
@@ -155,7 +154,7 @@
 
         <main class="max-w-5xl w-full mx-auto px-4 py-8 space-y-6 relative z-10">
             
-            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/50 rounded-2xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
                 <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80');"></div>
                 <div class="absolute top-0 right-0 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none z-0"></div>
                 
@@ -168,35 +167,35 @@
                         <div>
                             <label class="block text-sm text-gray-400 mb-2">Kişi / Grup Adı</label>
                             <div class="relative">
-                                <select id="personSelect" onchange="handlePersonSelectChange()" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors appearance-none">
+                                <select id="personSelect" onchange="handlePersonSelectChange()" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors appearance-none">
                                     <!-- Options will be populated by JS -->
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
                                     <i class="ph ph-caret-down"></i>
                                 </div>
                             </div>
-                            <input type="text" id="newPersonInput" class="hidden w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors mt-2" placeholder="Yeni kişi/grup adı">
+                            <input type="text" id="newPersonInput" class="hidden w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors mt-2" placeholder="Yeni kişi/grup adı">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-2">Tarih</label>
-                            <input type="date" id="dateInput" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                            <input type="date" id="dateInput" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-2">Başlangıç</label>
-                            <input type="time" id="startInput" value="09:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                            <input type="time" id="startInput" value="09:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
                         </div>
                         <div>
                             <label class="block text-sm text-gray-400 mb-2">Bitiş</label>
-                            <input type="time" id="endInput" value="17:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
+                            <input type="time" id="endInput" value="17:00" class="w-full bg-inputbg/80 backdrop-blur-sm border border-bordercol/30 rounded-3xl px-4 py-3 text-white outline-none focus:border-orange-400 transition-colors">
                         </div>
                     </div>
                     
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-inputbg/60 backdrop-blur-md border border-bordercol rounded-xl gap-4">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 bg-inputbg/60 backdrop-blur-md border border-bordercol/30 rounded-2xl gap-4">
                         <div>
                             <div class="text-sm text-gray-400 mb-1">Hesaplanan Süre</div>
                             <div id="durationDisplay" class="text-xl font-medium text-orange-400">8 saat 0 dakika</div>
                         </div>
-                        <button onclick="saveRecord()" id="saveBtn" class="w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-black font-medium px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-orange-500/20">
+                        <button onclick="saveRecord()" id="saveBtn" class="w-full sm:w-auto bg-orange-400 hover:bg-orange-500 text-black font-medium px-6 py-2.5 rounded-2xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-orange-500/20">
                             <i class="ph ph-floppy-disk text-lg"></i> Kaydet
                         </button>
                     </div>
@@ -204,7 +203,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/50 rounded-2xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
+                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
                     <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80');"></div>
                     
                     <div class="relative z-10 flex-1 flex flex-col">
@@ -212,18 +211,18 @@
                             <i class="ph ph-chart-line-up text-orange-400"></i> Özet
                         </h2>
                         <div class="space-y-4 flex-1 flex flex-col justify-center">
-                            <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl p-5">
+                            <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
                                 <div class="text-sm text-gray-400 mb-2">Toplam Mesai (Tüm Gruplar)</div>
                                 <div class="text-4xl text-white font-light">
                                     <span id="totalH">0</span> <span class="text-xl text-gray-500 mr-2">sa</span> <span id="totalM">0</span> <span class="text-xl text-gray-500">dk</span>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl p-5">
+                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
                                     <div class="text-sm text-gray-400 mb-2">Kayıt Sayısı</div>
                                     <div id="totalCount" class="text-2xl text-white font-light">0</div>
                                 </div>
-                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl p-5">
+                                <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-5">
                                     <div class="text-sm text-gray-400 mb-2">Grup Sayısı</div>
                                     <div id="totalGroups" class="text-2xl text-white font-light">0</div>
                                 </div>
@@ -232,7 +231,7 @@
                     </div>
                 </div>
 
-                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/50 rounded-2xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
+                <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 flex flex-col relative overflow-hidden shadow-lg shadow-black/5">
                     <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80');"></div>
                     
                     <div class="relative z-10 flex-1 flex flex-col">
@@ -246,8 +245,8 @@
                         </div>
                         
                         <div id="manualLocationContainer" class="hidden mb-4 flex items-center gap-2">
-                            <input type="text" id="manualLocationInput" placeholder="Şehir girin (Örn: İstanbul)" class="flex-1 bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-lg px-3 py-1.5 text-sm text-white outline-none focus:border-orange-400 transition-colors" onkeypress="if(event.key === 'Enter') searchManualLocation()">
-                            <button onclick="searchManualLocation()" class="px-3 py-1.5 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-lg transition-colors border border-orange-400/20">
+                            <input type="text" id="manualLocationInput" placeholder="Şehir girin (Örn: İstanbul)" class="flex-1 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl px-3 py-1.5 text-sm text-white outline-none focus:border-orange-400 transition-colors" onkeypress="if(event.key === 'Enter') searchManualLocation()">
+                            <button onclick="searchManualLocation()" class="px-3 py-1.5 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-xl transition-colors border border-orange-400/20">
                                 Ara
                             </button>
                         </div>
@@ -256,7 +255,7 @@
                             <div class="h-full flex flex-col items-center justify-center text-gray-500 text-sm py-8">
                                 <i class="ph ph-spinner animate-spin text-3xl mb-3 text-orange-400/50"></i>
                                 <p>Konumunuz bulunuyor ve ilanlar yükleniyor...</p>
-                                <button onclick="loadJobs()" class="mt-4 px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-lg hover:text-white transition-colors">
+                                <button onclick="loadJobs()" class="mt-4 px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl hover:text-white transition-colors">
                                     Konum İzni Ver
                                 </button>
                             </div>
@@ -265,7 +264,7 @@
                 </div>
             </div>
 
-            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/50 rounded-2xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden shadow-lg shadow-black/5">
                 <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80');"></div>
                 
                 <div class="relative z-10">
@@ -278,22 +277,22 @@
                             <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="importCSV(event)">
                             <input type="file" id="txtInput" accept=".txt" class="hidden" onchange="importTXT(event)">
                             
-                            <button onclick="document.getElementById('csvInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol text-gray-300 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                            <button onclick="document.getElementById('csvInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
                                 <i class="ph ph-upload-simple"></i> CSV İçe
                             </button>
-                            <button onclick="document.getElementById('txtInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol text-gray-300 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                            <button onclick="document.getElementById('txtInput').click()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
                                 <i class="ph ph-upload-simple"></i> TXT İçe
                             </button>
-                            <button onclick="exportNotes('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol text-gray-300 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                            <button onclick="exportNotes('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
                                 <i class="ph ph-share-network"></i> Tümünü Paylaş
                             </button>
-                            <button onclick="exportTXT('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol text-gray-300 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                            <button onclick="exportTXT('all')" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
                                 <i class="ph ph-download-simple"></i> Tümünü TXT
                             </button>
-                            <button onclick="exportCSV()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol text-gray-300 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors">
+                            <button onclick="exportCSV()" class="px-3 py-2 bg-inputbg/80 backdrop-blur-sm hover:bg-bordercol border border-bordercol/50 text-gray-300 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors">
                                 <i class="ph ph-download-simple"></i> Tümünü CSV
                             </button>
-                            <button id="btn-clear-all" onclick="handleSmartDelete('all', this)" class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 text-sm font-medium rounded-lg flex items-center gap-2 transition-colors ml-auto sm:ml-2" data-confirm="false">
+                            <button id="btn-clear-all" onclick="handleSmartDelete('all', this)" class="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 text-sm font-medium rounded-xl flex items-center gap-2 transition-colors ml-auto sm:ml-2" data-confirm="false">
                                 <i class="ph ph-trash"></i> Tümünü Sil
                             </button>
                         </div>
@@ -305,7 +304,7 @@
                 </div>
             </div>
 
-            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/50 rounded-2xl p-6 relative overflow-hidden mt-6 shadow-lg shadow-black/5">
+            <div class="bg-cardbg/40 backdrop-blur-xl border border-bordercol/30 rounded-3xl p-6 relative overflow-hidden mt-6 shadow-lg shadow-black/5">
                 <div class="absolute inset-0 z-0 opacity-10 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80');"></div>
                 
                 <div class="relative z-10">
@@ -386,7 +385,7 @@
                 text: text, duration: 3000, gravity: "bottom", position: "right",
                 style: {
                     background: isError ? "#ef4444" : "#f97316", color: isError ? "#fff" : "#000",
-                    borderRadius: "0.5rem", padding: "12px 24px", fontWeight: "500",
+                    borderRadius: "1rem", padding: "12px 24px", fontWeight: "500",
                     boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
                 }
             }).showToast();
@@ -432,27 +431,6 @@
             document.getElementById('loginScreen').classList.add('flex');
             document.getElementById('usernameInput').value = '';
             setTimeout(() => document.getElementById('usernameInput').focus(), 100);
-        }
-
-        function downloadApp() {
-            fetch(window.location.href)
-                .then(res => res.text())
-                .then(html => {
-                    const blob = new Blob([html], { type: 'text/html' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'MesaiPro.html';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    showToast('Uygulama HTML olarak indirildi!');
-                })
-                .catch(err => {
-                    console.error(err);
-                    showToast('İndirme başarısız oldu.', true);
-                });
         }
 
         function showDashboard() {
@@ -669,7 +647,7 @@
             
             jobs.forEach(job => {
                 container.innerHTML += `
-                    <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-orange-400/50 transition-colors group">
+                    <div class="bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-orange-400/50 transition-colors group">
                         <div class="flex-1 min-w-0 pr-4">
                             <h3 class="text-white font-medium group-hover:text-orange-400 transition-colors truncate" title="${job.title}">${job.title}</h3>
                             <div class="flex items-center gap-2 mt-1.5 flex-wrap">
@@ -680,7 +658,7 @@
                                 <span class="text-gray-400 text-xs capitalize">${job.type}</span>
                             </div>
                         </div>
-                        <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-lg transition-colors text-center border border-orange-400/20 flex items-center justify-center gap-2 whitespace-nowrap">
+                        <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2 bg-orange-400/10 hover:bg-orange-400/20 text-orange-400 text-sm font-medium rounded-xl transition-colors text-center border border-orange-400/20 flex items-center justify-center gap-2 whitespace-nowrap">
                             Başvur <i class="ph ph-arrow-up-right"></i>
                         </a>
                     </div>
@@ -698,10 +676,10 @@
                     <i class="ph ph-warning-circle text-3xl mb-3 text-red-400/50"></i>
                     <p>${msg}</p>
                     <div class="flex flex-wrap justify-center gap-2 mt-4">
-                        <button onclick="loadJobs()" class="px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol rounded-lg hover:text-white transition-colors">
+                        <button onclick="loadJobs()" class="px-4 py-2 bg-inputbg/80 backdrop-blur-sm border border-bordercol/50 rounded-xl hover:text-white transition-colors">
                             Otomatik Bul
                         </button>
-                        <button onclick="toggleManualLocation()" class="px-4 py-2 bg-orange-400/10 text-orange-400 border border-orange-400/20 rounded-lg hover:bg-orange-400/20 transition-colors">
+                        <button onclick="toggleManualLocation()" class="px-4 py-2 bg-orange-400/10 text-orange-400 border border-orange-400/20 rounded-xl hover:bg-orange-400/20 transition-colors">
                             Elle Gir
                         </button>
                     </div>
@@ -892,7 +870,7 @@
                 const originalClasses = btnElement.className;
                 
                 btnElement.innerHTML = `<i class="ph ph-warning"></i> Emin misiniz?`;
-                btnElement.className = `px-3 py-2 bg-red-500 text-[#ffffff] text-sm font-medium rounded-lg flex items-center gap-2 transition-colors ${targetId === 'all' ? 'ml-auto sm:ml-2' : ''}`;
+                btnElement.className = `px-3 py-2 bg-red-500 text-[#ffffff] text-sm font-medium rounded-xl flex items-center gap-2 transition-colors ${targetId === 'all' ? 'ml-auto sm:ml-2' : ''}`;
                 
                 if (deleteTimeouts[targetId]) clearTimeout(deleteTimeouts[targetId]);
                 
@@ -931,7 +909,7 @@
             const groupNames = Object.keys(grouped).sort();
             
             if (groupNames.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-gray-500 bg-inputbg/40 backdrop-blur-md rounded-xl border border-bordercol">Kayıt bulunmuyor.</div>`;
+                container.innerHTML = `<div class="p-8 text-center text-gray-500 bg-inputbg/40 backdrop-blur-md rounded-2xl border border-bordercol/50">Kayıt bulunmuyor.</div>`;
             } else {
                 groupNames.forEach(person => {
                     const personRecords = grouped[person];
@@ -962,8 +940,8 @@
                     const safePersonId = person.replace(/[^a-zA-Z0-9]/g, '_');
 
                     container.innerHTML += `
-                        <div class="bg-inputbg/40 backdrop-blur-md border border-bordercol rounded-xl overflow-hidden">
-                            <div class="bg-inputbg/60 p-4 border-b border-bordercol flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="bg-inputbg/40 backdrop-blur-md border border-bordercol/50 rounded-2xl overflow-hidden">
+                            <div class="bg-inputbg/60 p-4 border-b border-bordercol/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <div>
                                     <h3 class="text-white font-medium text-lg flex items-center gap-2">
                                         <i class="ph ph-user text-orange-400"></i> ${person}
@@ -974,13 +952,13 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <button onclick="exportNotes('${person}')" class="p-2 bg-cardbg hover:bg-bordercol border border-bordercol text-gray-300 rounded-lg transition-colors" title="Paylaş">
+                                    <button onclick="exportNotes('${person}')" class="p-2 bg-cardbg hover:bg-bordercol border border-bordercol/50 text-gray-300 rounded-xl transition-colors" title="Paylaş">
                                         <i class="ph ph-share-network"></i>
                                     </button>
-                                    <button onclick="exportTXT('${person}')" class="p-2 bg-cardbg hover:bg-bordercol border border-bordercol text-gray-300 rounded-lg transition-colors" title="TXT İndir">
+                                    <button onclick="exportTXT('${person}')" class="p-2 bg-cardbg hover:bg-bordercol border border-bordercol/50 text-gray-300 rounded-xl transition-colors" title="TXT İndir">
                                         <i class="ph ph-download-simple"></i>
                                     </button>
-                                    <button id="btn-del-${safePersonId}" onclick="handleSmartDelete('${person}', this)" class="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-lg transition-colors" data-confirm="false" title="Grubu Sil">
+                                    <button id="btn-del-${safePersonId}" onclick="handleSmartDelete('${person}', this)" class="p-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-xl transition-colors" data-confirm="false" title="Grubu Sil">
                                         <i class="ph ph-trash"></i>
                                     </button>
                                 </div>
